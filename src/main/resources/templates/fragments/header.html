@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:fragment="header">
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="header"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	       <div
       class="hero page-inner overlay"
-      style="background-image: url('images/걸작.png')"
+      style="background-image: url('/images/걸작.png')"
     >
       <div class="container">
         <div class="row justify-content-center align-items-center">
@@ -24,12 +25,12 @@
       <div class="container">
         <div class="menu-bg-wrap">
           <div class="site-navigation">
-            <a href="index.html" class="logo m-0 float-start">JH class</a>
+            <a href="/" class="logo m-0 float-start">JH class</a>
 
             <ul
               class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end"
             >
-              <li><a href="index.html">홈</a></li>
+              <li><a href="/">홈</a></li>
               <li class="has-children active">
                 <a href="properties.html">카테고리</a>
                 <ul class="dropdown">
@@ -40,8 +41,10 @@
 
                 </ul>
               </li>
-              <li><a href="about.html">클래스 등록하기</a></li>
-              <li><a href="contact.html">내 정보</a></li>
+              <li><a href="contact.html">살펴보기</a></li>
+              <li><a href="/members/login" sec:authorize="isAnonymous()">로그인</a></li>
+              <li><a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
+              <li><a href="contact.html" sec:authorize="isAuthenticated()">내 정보</a></li>
             </ul>
 
             <a
