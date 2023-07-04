@@ -1935,7 +1935,7 @@ progress {
   min-height: calc(1.5em + 1rem + 2px);
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
-  border-radius: 0.3rem; }
+  border-radius: 0.7rem; }
   .form-control-lg::file-selector-button {
     padding: 0.5rem 1rem;
     margin: -0.5rem -1rem;
@@ -6590,7 +6590,7 @@ textarea.form-control-lg {
   margin-bottom: 1.5rem !important; }
 
 .mb-5 {
-  margin-bottom: 2rem !important; }
+  margin-bottom: 1.5rem !important; }
 
 .mb-auto {
   margin-bottom: auto !important; }
@@ -6897,7 +6897,7 @@ textarea.form-control-lg {
 
 .text-black-50, body {
   --bs-text-opacity: 1;
-  color: rgba(0, 0, 0, 0.5) !important; }
+  color: black !important; }
 
 .text-white-50 {
   --bs-text-opacity: 1;
@@ -9782,7 +9782,7 @@ textarea {
 
 .btn {
   text-decoration: none !important;
-  border-radius: 30px;
+  border-radius: 20px;
   padding-top: 15px;
   padding-bottom: 15px;
   padding-left: 30px;
@@ -9922,7 +9922,7 @@ textarea {
   .property-item .property-content .specs {
     font-size: 18px; }
     .property-item .property-content .specs .caption {
-      font-size: 13px; }
+      font-size: 15px; }
 
 .slider-nav {
   margin-top: -100px;
