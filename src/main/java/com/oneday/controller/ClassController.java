@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ClassController {
 	
-	@GetMapping(value="/list")
+	@GetMapping(value="/oneday/list")
 	public String classList() {
-		return "member/memberLoginForm";
+		return "oneday/classList";
 	}
 }

@@ -18,7 +18,7 @@ public class SecurityConfig {
 		//람다로 변경됨
 		http.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "fonts/**").permitAll()
-				.requestMatchers("/", "/members/**", "/item/**").permitAll()
+				.requestMatchers("/", "/members/**", "/item/**", "/oneday/**").permitAll()
 				.requestMatchers("/favicon.ico", "/error").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
