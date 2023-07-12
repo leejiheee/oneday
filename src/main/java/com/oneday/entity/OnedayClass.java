@@ -24,21 +24,12 @@ public class OnedayClass {
 	private String teacher;
 	
 	@Lob
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "longtext")
 	private String classDetail;
 	
 	@Column(nullable = false)
 	private int price;	
-	
-	@Column(nullable = false)
-	private int maxUser;
-	
-	@Enumerated(EnumType.STRING)
-	private ClassEnd classEnd;
 
-	@Column(nullable = false)
-	private int nowUser;
-	
 	@Column(nullable = false, length = 255)
 	private String region;
 	
