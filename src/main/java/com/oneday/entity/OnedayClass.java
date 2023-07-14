@@ -10,7 +10,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class OnedayClass {
+public class OnedayClass{
 	
 	@Id
 	@Column(name="class_id")

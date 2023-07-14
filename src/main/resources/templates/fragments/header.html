@@ -30,7 +30,14 @@
             <ul
               class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end"
             >
+            
               <li><a href="/">홈</a></li>
+              <li class="has-children active">
+              	 <a sec:authorize="hasAnyAuthority('ROLE_ADMIN')">관리자 메뉴</a >
+                  <ul class="dropdown">
+                    <li><a href="/admin/oneday/new">상품등록</a></li>
+                  </ul>
+              </li>
               <li class="has-children active">
                 <a href="properties.html">카테고리</a>
                 <ul class="dropdown">
@@ -38,7 +45,6 @@
                   <li><a href="#">핸드메이드</a></li>
                   <li><a href="#">드로잉</a></li>
                   <li><a href="#">운동</a></li>
-
                 </ul>
               </li>
               <li><a href="/oneday/list">살펴보기</a></li>

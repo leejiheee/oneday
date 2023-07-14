@@ -9,19 +9,27 @@ import lombok.*;
 @Table(name="class_img")
 @Setter
 @Getter
-@ToString
-public class ClassImg {
+public class ClassImg{
 	@Id
-	@Column(name="img_id")
+	@Column(name="class_img_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Long id;
 	
 	private String imgName;
 	
-	@Enumerated(EnumType.STRING)
-	private RepImg repImg;
+	private String oriImgName;
 	
-	@ManyToOne
+	private String imgUrl;
+	
+	private String repImgYn;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="class_id")
 	private OnedayClass onedayClass;
+	
+	public void updateClassImg(String oriImgName, String imgName, String imgUrl) {
+		this.oriImgName = oriImgName;
+		this.imgName = imgName;
+		this.imgUrl = imgUrl;
+	}
 }

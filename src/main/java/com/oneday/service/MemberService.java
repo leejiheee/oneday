@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberService implements UserDetailsService{
 	private final MemberRepository memberRepository;
 	
+	//회원가입 데이터를 DB에 저장
 	public Member saveMember(Member member) {
 		validateDuplicateMember(member);
 		Member savedMember = memberRepository.save(member);

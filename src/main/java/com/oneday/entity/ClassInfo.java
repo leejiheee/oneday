@@ -1,6 +1,7 @@
 package com.oneday.entity;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.oneday.constant.ClassEnd;
 
@@ -12,29 +13,30 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class ClassInfo {
+public class ClassInfo{
 	@Id
 	@Column(name="class_info_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-
-	@Column(nullable = false)
-	private LocalDateTime classDate;
 	
-	@Column(nullable = false)
-	private LocalDateTime classTime;
+	@Column(unique = true, nullable = false, length = 255)
+	private Date date;
 	
-	@Column(nullable = false)
+	@Column(unique = true, nullable = false, length = 255)	
+	private Date time;
+	
+	@Column(unique = true, nullable = false, length = 255)	
 	private int maxUser;
+	
+	@Column(unique = true, nullable = false, length = 255)	
+	private int nowUser;
 	
 	@Enumerated(EnumType.STRING)
 	private ClassEnd classEnd;
-
-	@Column(nullable = false)
-	private int nowUser;
 	
 	@ManyToOne
 	@JoinColumn(name="class_id")
 	private OnedayClass onedayClass;
+
 	
 }

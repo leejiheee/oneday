@@ -8,10 +8,11 @@
 		    <div class="section section-properties">
       <div class="container">
         <div class="row" >
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
+          th:each="class : ${classes.getContent()}">
             <div class="property-item mb-30">
-              <a href="property-single.html" class="img">
-                <img src="/images/img_1.jpg" alt="Image" class="img-fluid" />
+              <a th:href="'/class/' + ${onedayClass.id}" class="img">
+                <img src="${onedayClass.imgUrl}" alt="Image" class="img-fluid" />
               </a>
 
               <div class="property-content">

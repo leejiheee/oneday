@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class Review {
+public class Review{
 	@Id
 	@Column(name="review_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)

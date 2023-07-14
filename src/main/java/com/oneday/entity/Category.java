@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class Category {
+public class Category{
 	@Id
 	@Column(name="category_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)

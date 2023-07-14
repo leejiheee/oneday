@@ -12,7 +12,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class ClassRegist {
+public class ClassRegist{
 	@Id
 	@Column(name="regist_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
