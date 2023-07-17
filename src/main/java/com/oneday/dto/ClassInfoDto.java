@@ -31,8 +31,6 @@ public class ClassInfoDto {
 		return modelMapper.map(classInfo, ClassInfoDto.class);
 	}
 
-	public static OnedayClassDto of(OnedayClass onedayClass) {
-		return modelMapper.map(onedayClass, OnedayClassDto.class);
-	}
+
 }
 

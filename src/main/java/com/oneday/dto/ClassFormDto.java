@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 
+import com.oneday.constant.ClassEnd;
+import com.oneday.entity.Category;
 import com.oneday.entity.OnedayClass;
 
 import jakarta.validation.constraints.*;
@@ -21,7 +23,7 @@ public class ClassFormDto {
 	
 	@NotNull(message = "가격은 필수 입력입니다.")
 	private int price;
-	
+
 	@NotNull(message = "강사명은 필수 입력입니다.")
 	private String teacherNm;
 	
@@ -30,8 +32,12 @@ public class ClassFormDto {
 	
 	private String classDetail;
 	
+	private ClassEnd classEnd;
+	
 	//이미지 정보 저장
 	private List<ClassImgDto> classImgDtoList = new ArrayList<>();
+	
+	private List<Category> classCategoryList = new ArrayList<>();
 	
 	//이미지 아이디 저장 - > 수정시 이미지 아이디들 담아둘 용도
 	private List<Long> classImgIds = new ArrayList<>();

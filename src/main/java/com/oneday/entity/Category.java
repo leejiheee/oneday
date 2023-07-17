@@ -12,12 +12,17 @@ public class Category{
 	@Id
 	@Column(name="category_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Long id;
 	
-	private String categoryName;
+	private String categoryNm;
 	
 	
 	@OneToOne
 	@JoinColumn(name="class_id")
 	private OnedayClass onedayClass;
+	
+	
+	public void updateCategory(String categoryNm) {
+		this.categoryNm = categoryNm;
+	}
 }

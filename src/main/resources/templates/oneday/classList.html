@@ -11,8 +11,8 @@
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
           th:each="class : ${classes.getContent()}">
             <div class="property-item mb-30">
-              <a th:href="'/class/' + ${onedayClass.id}" class="img">
-                <img src="${onedayClass.imgUrl}" alt="Image" class="img-fluid" />
+              <a th:href="'/oneday/' + ${class.id}" class="img">
+                <img src="${class.imgUrl}" alt="Image" class="img-fluid" style="width: 404px; height: 404px; "/>
               </a>
 
               <div class="property-content">

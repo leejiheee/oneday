@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.oneday.dto.ClassFormDto;
 import com.oneday.dto.ClassSearchDto;
-import com.oneday.dto.OnedayClassDto;
+import com.oneday.dto.MainClassDto;
 import com.oneday.service.ClassService;
 
 import jakarta.validation.Valid;
@@ -33,9 +33,10 @@ public class ClassController {
 	  public String classList(Model model, ClassSearchDto classSearchDto, Optional<Integer> page) {
 		  Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
 		  
-		  Page<OnedayClassDto> classes = classService.getOnedayClassDtoPage(classSearchDto, pageable);
+		  Page<MainClassDto> classes = classService.getMainClassDto(classSearchDto, pageable);
 
 		  model.addAttribute("classes", classes);
+		  model.addAttribute("classSearchDto", classSearchDto);
 		  model.addAttribute("maxPage", 5);
 
 	  return "/oneday/classList"; 
@@ -74,7 +75,6 @@ public class ClassController {
 		}
 		  
 		  return "redirect:/";
-		  
 			  
 	  }
 	  

@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oneday.dto.ClassCategoryDto;
 import com.oneday.dto.ClassFormDto;
 import com.oneday.dto.ClassImgDto;
 import com.oneday.dto.ClassSearchDto;
-import com.oneday.dto.OnedayClassDto;
+import com.oneday.dto.MainClassDto;
+import com.oneday.entity.Category;
 import com.oneday.entity.ClassImg;
 import com.oneday.entity.OnedayClass;
+import com.oneday.repository.CategoryRepository;
 import com.oneday.repository.ClassImgRepository;
 import com.oneday.repository.ClassRepository;
 import com.oneday.service.*;
@@ -30,10 +33,14 @@ public class ClassService {
 	private final ClassRepository classRepository;
 	private final ClassImgService classImgService;
 	private final ClassImgRepository classImgRepository;
+	private final CategoryRepository categoryRepository;
+	private final CategoryService categoryService;
 	
 	public Long saveClass(ClassFormDto classFormDto, List<MultipartFile> classImgFileList) throws Exception {
 		OnedayClass onedayClass = classFormDto.createClass();
 		classRepository.save(onedayClass);
+		Category category = new Category();
+		category.setOnedayClass(onedayClass);
 		
 		for(int i=0; i<classImgFileList.size(); i++) {
 			ClassImg classImg = new ClassImg();
@@ -46,6 +53,7 @@ public class ClassService {
 			}
 			classImgService.saveClassImg(classImg, classImgFileList.get(i));
 		}
+		categoryService.saveClassCt(category);
 		
 		return onedayClass.getId();
 	}
@@ -56,12 +64,21 @@ public class ClassService {
 		//이미지 가져오기
 		List<ClassImg> classImgList = classImgRepository.findByOnedayClassIdOrderByIdAsc(classId);
 		
+		List<Category> categoryList = categoryRepository.findByOnedayClassIdOrderByIdAsc(classId);
+		
 		//엔티티객체 -> Dto로 변환
 		List<ClassImgDto> classImgDtoList = new ArrayList<>();
+		
+		List<ClassCategoryDto> categoryDtoList = new ArrayList<>();
 		
 		for(ClassImg classImg : classImgList) {
 			ClassImgDto classImgDto = ClassImgDto.of(classImg);
 			classImgDtoList.add(classImgDto);
+		}
+		
+		for(Category category : categoryList) {
+			ClassCategoryDto categoryDto = ClassCategoryDto.of(category);
+			categoryDtoList.add(categoryDto);
 		}
 		
 		//테이블 데이터 가져오기
@@ -73,16 +90,18 @@ public class ClassService {
 		
 		//이미지 정보를 classFormDto에 넣어준다
 		classFormDto.setClassImgDtoList(classImgDtoList);
+		classFormDto.setClassCategoryList(categoryList);
 		
 		return classFormDto;
 	}
 	
+	
 
 	@Transactional(readOnly = true)
-	public Page<OnedayClassDto> getOnedayClassDtoPage(ClassSearchDto classSearchDto, Pageable pageable) {
-		System.out.println("왜안돼애애애애애애애애ㅐ애애애애애애애애앵");
-		Page<OnedayClassDto> onedayClassPage = classRepository.getOnedayClassPage(classSearchDto, pageable);
-		return onedayClassPage;
+	public Page<MainClassDto> getMainClassDto(ClassSearchDto classSearchDto, Pageable pageable) {
+
+		Page<MainClassDto> mainClassPage = classRepository.getMainClassPage(classSearchDto, pageable);
+		return mainClassPage;
 	}
 
 }

@@ -1,8 +1,5 @@
 package com.oneday.dto;
 
-import org.modelmapper.ModelMapper;
-
-import com.oneday.entity.OnedayClass;
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.Getter;
@@ -10,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OnedayClassDto {
+public class MainClassDto {
 	private Long id;
 	
 	private String classNm;
@@ -25,19 +22,14 @@ public class OnedayClassDto {
 	
 	private String region;
 	
-	private static ModelMapper modelMapper = new ModelMapper();
-	
 	@QueryProjection
-	public OnedayClassDto(Long id, String classNm, String classDetail, String imgUrl, Integer price, String teacherNm, String region) {
-		System.out.println("여기는 왔나ㅣ?? ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ");
+	public MainClassDto(Long id, String classNm, String classDetail, String imgUrl, Integer price, String teacherNm, String region) {
 		this.id = id;
-		this.classNm = classNm;
 		this.classDetail = classDetail;
+		this.classNm = classNm;
 		this.imgUrl = imgUrl;
 		this.price = price;
 		this.teacherNm = teacherNm;
 		this.region = region;
 	}
-	
-
 }
