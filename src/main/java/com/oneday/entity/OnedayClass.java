@@ -34,17 +34,29 @@ public class OnedayClass{
 	@Column(nullable = false, length = 255)
 	private String region;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private Category category;
+	
 	@Enumerated(EnumType.STRING)
 	private ClassEnd classEnd; //마감 상태
 	
 	//class엔티티 수정
-	public void updateClass(ClassFormDto classFormDto) {
+	public void updateClass(ClassFormDto classFormDto, Category category) {
 		this.classNm = classFormDto.getClassNm();
 		this.price = classFormDto.getPrice();
 		this.teacherNm = classFormDto.getTeacherNm();
 		this.region = classFormDto.getRegion();
 		this.classDetail = classFormDto.getClassDetail();
 		this.classEnd = classFormDto.getClassEnd();
+		this.category = category;
+	}
+	
+	public static OnedayClass createClass(Category category) {
+		OnedayClass onedayClass = new OnedayClass();
+		onedayClass.setCategory(category);
+		
+		return onedayClass;
 	}
 	
 }

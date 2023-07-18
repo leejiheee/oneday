@@ -34,18 +34,23 @@ public class ClassFormDto {
 	
 	private ClassEnd classEnd;
 	
+	@NotNull(message = "카테고리 선택은 필수입니다.")
+	private Long categoryId;
+	
+	private Category category;
+	
 	//이미지 정보 저장
 	private List<ClassImgDto> classImgDtoList = new ArrayList<>();
-	
-	private List<Category> classCategoryList = new ArrayList<>();
 	
 	//이미지 아이디 저장 - > 수정시 이미지 아이디들 담아둘 용도
 	private List<Long> classImgIds = new ArrayList<>();
 	
 	private static ModelMapper modelMapper = new ModelMapper();
 	
+	
 	//dto -> entity로 바꿈
-	public OnedayClass createClass() {
+	public OnedayClass createClass(Category category) {
+		this.category = category;
 		return modelMapper.map(this, OnedayClass.class);
 	}
 	
@@ -53,6 +58,7 @@ public class ClassFormDto {
 	public static ClassFormDto of(OnedayClass onedayClass) {
 		return modelMapper.map(onedayClass, ClassFormDto.class);
 	}
+
 	
 
 }

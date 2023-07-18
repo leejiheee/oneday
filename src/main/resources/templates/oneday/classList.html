@@ -12,16 +12,16 @@
           th:each="class : ${classes.getContent()}">
             <div class="property-item mb-30">
               <a th:href="'/oneday/' + ${class.id}" class="img">
-                <img src="${class.imgUrl}" alt="Image" class="img-fluid" style="width: 404px; height: 404px; "/>
+                <img th:src="${class.imgUrl}" alt="Image" class="img-fluid" style="width: 404px; height: 404px; "/>
               </a>
 
               <div class="property-content">
-                <div class="price mb-2"><span>$1,291,000</span></div>
+                <div class="price mb-2"><span th:text="${class.category.categoryNm}"></span></div>
                 <div>
                   <span class="d-block mb-2 text-black-50"
                     >5232 California Fake, Ave. 21BC</span
                   >
-                  <span class="city d-block mb-3">California, USA</span>
+                  <span class="city d-block mb-3" th:text="${class.classNm}"></span>
 
                   <div class="specs d-flex mb-4">
                     <span class="d-block d-flex align-items-center me-3">
@@ -35,9 +35,9 @@
                   </div>
 
                   <a
-                    href="property-single.html"
+                    th:href="'/oneday/' + ${class.id}"
                     class="btn btn-primary py-2 px-3"
-                    >See details</a
+                    >신청하러 가기</a
                   >
                 </div>
               </div>
@@ -47,16 +47,22 @@
 
 
         </div>
-        <div class="row align-items-center py-5">
-          <div class="col-lg-3">Pagination (1 of 10)</div>
-          <div class="col-lg-6 text-center">
-            <div class="custom-pagination">
-              <a href="#">1</a>
-              <a href="#" class="active">2</a>
-              <a href="#">3</a>
-              <a href="#">4</a>
-              <a href="#">5</a>
-            </div>
+        <div class="row align-items-center py-5" style="margin: 0 auto;">
+          <div class="col-lg-6 text-center" style="width:100% !important;">
+          <nav th:with="start=${(classes.number/maxPage)*maxPage + 1}, 
+						end=(${(classes.totalPages == 0) ? 1 : (start + (maxPage - 1) < classes.totalPages ? 
+						start + (maxPage - 1) : classes.totalPages)})">
+            <ul class="custom-pagination" style="list-style: none; display: flex; justify-content: center;">
+             <li th:classappend="${classes.first}?'disabled'">
+             <a th:href="@{'/oneday/list' + '?searchQuery=' + ${classSearchDto.searchQuery} + '&page=' + ${classes.number - 1}}">◀</a></li>
+              <li><a href="#" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${classes.number eq page-1}?'active':''"
+              th:inline="text" th:href="@{'/oneday/list' + '?searchQuery=' + ${classSearchDto.searchQuery} + '&page=' + ${page - 1}}">[[${page}]]</a>
+				</li>
+				<li th:classappend="${classes.last}?'disabled'">
+					<a th:href="@{'/oneday/list' + '?searchQuery=' + ${classSearchDto.searchQuery} + '&page=' + ${classes.number + 1}}">▶</a>
+				</li>
+            </ul>
+            </nav>
           </div>
         </div>
       </div>

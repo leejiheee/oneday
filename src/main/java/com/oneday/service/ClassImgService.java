@@ -31,14 +31,14 @@ public class ClassImgService {
 		if(!StringUtils.isEmpty(oriImgName)) {
 			//oriImgName 이 빈문자열이 아니라면
 			imgName = fileService.uploadFile(classImgLocation, oriImgName, classImgFile.getBytes());
-			imgUrl = "/images/oneday/" + imgName;
+			imgUrl = "/images/img/" + imgName;
 		}
 		
 		//2. class_img 테이블에 저장
 		classImg.updateClassImg(oriImgName, imgName, imgUrl);
 		classImgRepository.save(classImg);
 	}
-	/*
+
 	public void updateClassImg(Long classImgId, MultipartFile classImgFile) throws Exception {
 		if(!classImgFile.isEmpty()) {
 			ClassImg savedClassImg = classImgRepository.findById(classImgId).orElseThrow(EntityNotFoundException::new);
@@ -49,10 +49,10 @@ public class ClassImgService {
 			
 			String oriImgName = classImgFile.getOriginalFilename();
 			String imgName = fileService.uploadFile(classImgLocation, oriImgName, classImgFile.getBytes());
-			String imgUrl = "/imges/item" + imgName;
+			String imgUrl = "/images/img/" + imgName;
 			
 			savedClassImg.updateClassImg(oriImgName, imgName, imgUrl);
 		}
 	}
-	*/
+
 }

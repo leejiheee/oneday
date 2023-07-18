@@ -8,5 +8,5 @@ import com.oneday.entity.Category;
 
 
 public interface CategoryRepository extends JpaRepository<Category, Long>{
-	List<Category> findByOnedayClassIdOrderByIdAsc(Long classId);
+	List<Category> findByCategoryNm(String categoryNm);
 }

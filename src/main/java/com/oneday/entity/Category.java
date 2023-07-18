@@ -11,18 +11,10 @@ import lombok.*;
 public class Category{
 	@Id
 	@Column(name="category_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@Column(nullable = false, length = 255)
 	private String categoryNm;
 	
 	
-	@OneToOne
-	@JoinColumn(name="class_id")
-	private OnedayClass onedayClass;
-	
-	
-	public void updateCategory(String categoryNm) {
-		this.categoryNm = categoryNm;
-	}
 }

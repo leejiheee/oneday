@@ -11,7 +11,7 @@ public interface ClassImgRepository extends JpaRepository<ClassImg, Long>{
 
 	List<ClassImg> findByOnedayClassIdOrderByIdAsc(Long classId); 
 	
-	/*
-	 ClassImg findByOnedayClassImgIdAndRepimgYn(Long classId, String repimgYn);
+/*
+	 ClassImg findByClassIdAndRepimgYn(Long classId, String repimgYn);
 */
 }

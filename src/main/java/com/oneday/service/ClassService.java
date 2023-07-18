@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.oneday.dto.ClassCategoryDto;
 import com.oneday.dto.ClassFormDto;
 import com.oneday.dto.ClassImgDto;
 import com.oneday.dto.ClassSearchDto;
@@ -34,26 +33,26 @@ public class ClassService {
 	private final ClassImgService classImgService;
 	private final ClassImgRepository classImgRepository;
 	private final CategoryRepository categoryRepository;
-	private final CategoryService categoryService;
 	
+	//클래스 등록
 	public Long saveClass(ClassFormDto classFormDto, List<MultipartFile> classImgFileList) throws Exception {
-		OnedayClass onedayClass = classFormDto.createClass();
+		Category category = categoryRepository.findById(classFormDto.getCategoryId())
+												.orElseThrow(EntityNotFoundException::new);
+		OnedayClass onedayClass = classFormDto.createClass(category);
+
 		classRepository.save(onedayClass);
-		Category category = new Category();
-		category.setOnedayClass(onedayClass);
 		
 		for(int i=0; i<classImgFileList.size(); i++) {
 			ClassImg classImg = new ClassImg();
 			classImg.setOnedayClass(onedayClass);
 			
 			if(i == 0) {
-				classImg.setRepImgYn("Y");	
+				classImg.setRepimgYn("Y");	
 			} else {
-				classImg.setRepImgYn("N");
+				classImg.setRepimgYn("N");
 			}
 			classImgService.saveClassImg(classImg, classImgFileList.get(i));
 		}
-		categoryService.saveClassCt(category);
 		
 		return onedayClass.getId();
 	}
@@ -64,41 +63,57 @@ public class ClassService {
 		//이미지 가져오기
 		List<ClassImg> classImgList = classImgRepository.findByOnedayClassIdOrderByIdAsc(classId);
 		
-		List<Category> categoryList = categoryRepository.findByOnedayClassIdOrderByIdAsc(classId);
-		
 		//엔티티객체 -> Dto로 변환
 		List<ClassImgDto> classImgDtoList = new ArrayList<>();
-		
-		List<ClassCategoryDto> categoryDtoList = new ArrayList<>();
 		
 		for(ClassImg classImg : classImgList) {
 			ClassImgDto classImgDto = ClassImgDto.of(classImg);
 			classImgDtoList.add(classImgDto);
 		}
 		
-		for(Category category : categoryList) {
-			ClassCategoryDto categoryDto = ClassCategoryDto.of(category);
-			categoryDtoList.add(categoryDto);
-		}
-		
 		//테이블 데이터 가져오기
 		OnedayClass onedayClass = classRepository.findById(classId)
 												.orElseThrow(EntityNotFoundException::new);
 		
+		System.out.println(onedayClass.toString());
 		//엔티티 -> Dto로 변환
 		ClassFormDto classFormDto = ClassFormDto.of(onedayClass);
 		
 		//이미지 정보를 classFormDto에 넣어준다
 		classFormDto.setClassImgDtoList(classImgDtoList);
-		classFormDto.setClassCategoryList(categoryList);
 		
 		return classFormDto;
 	}
 	
+	//클래스 수정하기
+	public Long updateClass(ClassFormDto classFormDto, Category category ,List<MultipartFile> classImgFileList)throws Exception {
+		
+		OnedayClass onedayClass = classRepository.findById(classFormDto.getId())
+							.orElseThrow(EntityNotFoundException::new);
+		
+		onedayClass.updateClass(classFormDto, category);
+		
+		List<Long> classImgIds = classFormDto.getClassImgIds();
+		
+		for(int i = 0; i<classImgFileList.size(); i++) {
+			classImgService.updateClassImg(classImgIds.get(i), classImgFileList.get(i));
+		
+		}
+			return onedayClass.getId();
+	}
 	
 
 	@Transactional(readOnly = true)
-	public Page<MainClassDto> getMainClassDto(ClassSearchDto classSearchDto, Pageable pageable) {
+	public Page<OnedayClass> getAdminClassPage(ClassSearchDto classSearchDto, Pageable pageable) {
+		Page<OnedayClass> classPage = classRepository.getAdminOnedayClassPage(classSearchDto, pageable);
+		return classPage;
+	}
+	
+	
+	
+
+	@Transactional(readOnly = true)
+	public Page<MainClassDto> getMainClassPage(ClassSearchDto classSearchDto, Pageable pageable) {
 
 		Page<MainClassDto> mainClassPage = classRepository.getMainClassPage(classSearchDto, pageable);
 		return mainClassPage;
