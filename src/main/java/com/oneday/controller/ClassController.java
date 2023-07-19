@@ -1,17 +1,23 @@
 package com.oneday.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oneday.dto.ClassFormDto;
@@ -25,11 +31,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 @Controller
 @RequiredArgsConstructor
 public class ClassController {
-	  private final ClassService classService;
+
+		private final ClassService classService;
 	  
 	  //클래스 리스트
 	  @GetMapping(value="/oneday/list")
@@ -146,6 +154,16 @@ public class ClassController {
 		  
 		  return "redirect:/";
 	  }
+	  
+
+	  
+		//클래스 삭제
+		@DeleteMapping("/admin/{classId}/delete")
+		public @ResponseBody ResponseEntity deleteClass(@PathVariable("classId")Long classId, Principal principal) {
+			classService.deleteClass(classId);
+			
+			return new ResponseEntity<Long>(classId, HttpStatus.OK);
+		}
 }
 
 

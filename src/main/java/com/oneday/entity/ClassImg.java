@@ -1,5 +1,8 @@
 package com.oneday.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.oneday.constant.RepImg;
 
 import jakarta.persistence.*;
@@ -25,6 +28,7 @@ public class ClassImg{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="class_id")
+	@OnDelete(action= OnDeleteAction.CASCADE)
 	private OnedayClass onedayClass;
 	
 	public void updateClassImg(String oriImgName, String imgName, String imgUrl) {

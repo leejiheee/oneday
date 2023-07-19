@@ -1,5 +1,8 @@
 package com.oneday.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +26,7 @@ public class Review{
 	
 	@ManyToOne
 	@JoinColumn(name="class_id")
+	@OnDelete(action= OnDeleteAction.CASCADE)
 	private OnedayClass onedayClass;
 	
 	@ManyToOne

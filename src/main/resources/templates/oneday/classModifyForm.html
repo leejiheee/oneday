@@ -26,7 +26,7 @@
 	</style>
 </th:block>
 <div class="main" layout:fragment="content">
-	<form role="form" th:action="@{'/admin/oneday/' + ${classFormDto.id}}" method="post"
+	<form role="form" action="/admin/oneday/upload" method="post"
 			enctype="multipart/form-data" th:object="${classFormDto}" name="classForm">
 			<input type="hidden" th:field="*{id}" />
 		<label class="form-label">카테고리</label>
@@ -37,8 +37,6 @@
 		  <option value="3">공예</option>
 		  <option value="4">드로잉</option>
 		</select>
-		
-
 			
 		<div class="mb-3">
   			<label th:for="classNm" class="form-label">클래스 이름</label>
@@ -55,22 +53,22 @@
 				class="fieldError">Incorrect Data</p>
 		</div>
 			<label class="form-label">지역선택</label>
-		<div id="region" style="display: flex;">
-			<select id="region1" class="form-select"  name="addressRegion" id="addressRegion1"></select>
-    		<select id="region2" class="form-select" name="addressDo" id="addressDo1"></select>
-    		<select id="region3" class="form-select" name="addressSiGunGu" id="addressSiGunGu1"></select>
+		<div style="display: flex;">
+			<select class="form-select region"  name="addressRegion" id="addressRegion1"></select>
+    		<select class="form-select region" name="addressDo" id="addressDo1"></select>
+    		<select  class="form-select region" name="addressSiGunGu" id="addressSiGunGu1"></select>
 		</div>
-		
-		<button onclick="getSelectedValues()" type="button" class="btn btn-warning">등록</button>
-		<p id="result"></p>
-		
-		<div class="mb-3">
-  			<label th:for="region" class="form-label">상세주소</label>
- 			<input type="text" class="form-control" placeholder="상세 주소"
- 			th:field="*{region}">
+		<div>
+      		<input type="hidden" class="form-control" size="5" name="region" id="region" th:field="*{region}" />
+		</div>
+
 			<p th:if="${#fields.hasErrors('region')}" th:errors="*{region}"
 				class="fieldError">Incorrect Data</p>
-		</div>
+		
+		<!-- <div class="mb-3">
+  			<label class="form-label">상세주소</label>
+ 			<input type="text" class="form-control" placeholder="상세 주소">
+		</div> -->
 		<div class="mb-3">
   			<label th:for="price" class="form-label">가격</label>
  			<input type="text" class="form-control" placeholder="가격을 입력해주세요."
@@ -81,14 +79,12 @@
 		<div class="mb-3">
  			<label th:for="classDetail" class="form-label">상세정보</label>
   			<textarea class="form-control" id="fg" rows="10" th:field="*{classDetail}"></textarea>
-		
-		
+  			
 		<div class="form-group row" th:if="${not #lists.isEmpty(classFormDto.classImgDtoList)}" th:each="classImgDto, status: ${classFormDto.classImgDtoList}">
-			<div class="col-md-12">
-				<label for="formFile" class="form-label"
-				th:text="${not #strings.isEmpty(classImgDto.oriImgName)}
-				? ${classImgDto.oriImgName} : '클래스이미지' + ${status.index+1}"></label>
-				<input class="form-control" type="file" id="classImgFile" name="classImgFile" th:value="${classImgDto.id}">
+			<div class="col-md-12" >
+				<label for="formFile" class="form-label" th:text="${not #strings.isEmpty(classImgDto.oriImgName)}
+			? ${classImgDto.oriImgName} : '클래스이미지' + ${status.index + 1}"></label>
+				<input class="form-control" type="file" id="classImgFile" name="classImgFile">
 			<p th:if="${#fields.hasErrors('classDetail')}" th:errors="*{classDetail}"
 				class="fieldError">Incorrect Data</p>
 			</div>
@@ -148,6 +144,29 @@
            $(this).siblings(".custom-file-label").html(fileName);
       	 });
   		 }
+		
+/*   	 	$(document).ready(function() {
+ 			  $('select').niceSelect();
+			});   */
+
+			$('#addressRegion1').change(function () {
+			    timemerge();
+			});
+
+			$('#addressDo1').change(function () {
+			    timemerge();
+			});
+			
+			$('#addressSiGunGu1').change(function () {
+			    timemerge();
+			});
+
+
+			function timemerge() {
+			    $('#region').val($('#addressRegion1').val() + '|' + $('#addressDo1').val() + '|' + $('#addressSiGunGu1').val());
+
+			} 
+
 		
 		$(function(){
 		    areaSelectMaker("select[name=addressRegion]");
@@ -237,22 +256,24 @@
 		    }
 		}
 		
-		function getSelectedValues() {
-		    var selectElements = document.getElementsByClassName("region");
-		    var selectedValues = [];
 
-		    for (var i = 0; i < selectElements.length; i++) {
-		      var selectElement = selectElements[i];
-		      var selectedOptions = selectElement.selectedOptions;
-		      for (var j = 0; j < selectedOptions.length; j++) {
-		        var option = selectedOptions[j];
-		        selectedValues.push(option.value);
-		      }
-		    }
+	
+/* 		  function getSelectedValues() {
+			    var selectElements = document.getElementsByClassName("region");
+			    var selectedValues = [];
 
-		    var resultElement = document.getElementById("result");
-		    resultElement.textContent = "Selected Values: " + selectedValues.join(", ");
-		  }
+			    for (var i = 0; i < selectElements.length; i++) {
+			      var selectElement = selectElements[i];
+			      var selectedOptions = selectElement.selectedOptions;
+			      for (var j = 0; j < selectedOptions.length; j++) {
+			        var option = selectedOptions[j];
+			        selectedValues.push(option.value);
+			      }
+			    }
+
+			    var resultElement = document.getElementById("region");
+			    resultElement.textContent = "지역: " + selectedValues.join(" / ");
+			  } */
 		</script>
 	</th:block>
 </html>

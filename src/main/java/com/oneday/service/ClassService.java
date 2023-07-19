@@ -3,11 +3,14 @@ package com.oneday.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import com.oneday.dto.ClassFormDto;
 import com.oneday.dto.ClassImgDto;
@@ -15,10 +18,12 @@ import com.oneday.dto.ClassSearchDto;
 import com.oneday.dto.MainClassDto;
 import com.oneday.entity.Category;
 import com.oneday.entity.ClassImg;
+import com.oneday.entity.Member;
 import com.oneday.entity.OnedayClass;
 import com.oneday.repository.CategoryRepository;
 import com.oneday.repository.ClassImgRepository;
 import com.oneday.repository.ClassRepository;
+import com.oneday.repository.MemberRepository;
 import com.oneday.service.*;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -33,11 +38,13 @@ public class ClassService {
 	private final ClassImgService classImgService;
 	private final ClassImgRepository classImgRepository;
 	private final CategoryRepository categoryRepository;
+	private final MemberRepository memberRepository;
 	
 	//클래스 등록
 	public Long saveClass(ClassFormDto classFormDto, List<MultipartFile> classImgFileList) throws Exception {
 		Category category = categoryRepository.findById(classFormDto.getCategoryId())
 												.orElseThrow(EntityNotFoundException::new);
+		
 		OnedayClass onedayClass = classFormDto.createClass(category);
 
 		classRepository.save(onedayClass);
@@ -94,6 +101,7 @@ public class ClassService {
 		onedayClass.updateClass(classFormDto, category);
 		
 		List<Long> classImgIds = classFormDto.getClassImgIds();
+		System.out.println(classFormDto.getClassImgIds());
 		
 		for(int i = 0; i<classImgFileList.size(); i++) {
 			classImgService.updateClassImg(classImgIds.get(i), classImgFileList.get(i));
@@ -102,14 +110,20 @@ public class ClassService {
 			return onedayClass.getId();
 	}
 	
+	
+	//클래스 삭제
+	public void deleteClass(Long classId) {
+		OnedayClass onedayClass = classRepository.findById(classId).orElseThrow(EntityNotFoundException::new);
+		
+		classRepository.delete(onedayClass);
+	}
+
 
 	@Transactional(readOnly = true)
 	public Page<OnedayClass> getAdminClassPage(ClassSearchDto classSearchDto, Pageable pageable) {
 		Page<OnedayClass> classPage = classRepository.getAdminOnedayClassPage(classSearchDto, pageable);
 		return classPage;
 	}
-	
-	
 	
 
 	@Transactional(readOnly = true)

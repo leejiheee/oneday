@@ -14,4 +14,6 @@ public interface ClassRepositoryCustom {
 	
 	Page<MainClassDto> getMainClassPage(ClassSearchDto classSearchDto, Pageable pageable);
 	
+	
+	
 }

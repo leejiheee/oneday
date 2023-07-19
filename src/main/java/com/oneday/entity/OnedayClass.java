@@ -1,5 +1,8 @@
 package com.oneday.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.oneday.constant.ClassEnd;
 import com.oneday.dto.ClassFormDto;
 
@@ -36,6 +39,7 @@ public class OnedayClass{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
+	@OnDelete(action= OnDeleteAction.CASCADE)
 	private Category category;
 	
 	@Enumerated(EnumType.STRING)

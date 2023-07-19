@@ -2,6 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
 
 <th:block layout:fragment="css">
 </th:block>
@@ -25,10 +30,54 @@
       <td th:text="${class.teacherNm}"></td>
       <td th:text="${class.category.categoryNm}"></td>
       <td>[[${#numbers.formatInteger(class.price, 0, 'COMMA') + '원'}]]</td>
+      <td>
+		<button type="button" th:value="${class.Id}" onclick="deleteClass(this.value)">
+		삭제</button>
+	<td>
     </tr>
   </tbody>
 </table>
 </form>
 </div>
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	function deleteClass(classId) {
+		const deleteconf = confirm("삭제하시겠습니까?");
+		if(!deleteconf) return;
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+ 		//서버로 보내줄 데이터(반드시 JSON  -> string 타입으로 바꿔야한다.)
+		var paramData = {
+			classId : classId	
+		}; 
+		
+		var url = "/admin/" + classId + "/delete";
+			$.ajax({
+				url : url,
+				type : "DELETE", //전송방식
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
 
+					location.href= '/admin/classes'
+				},
+				error : function(jqXHR, status, error) {
+					if(jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/login';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+	}
+	</script>
+</th:block>
 </html>
