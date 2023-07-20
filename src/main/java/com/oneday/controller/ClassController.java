@@ -52,6 +52,19 @@ public class ClassController {
 	  return "/oneday/classList"; 
 	 }
 	 
+	  @GetMapping(value = "/oneday/list/1")
+	  public String categoryClass(Model model, ClassSearchDto classSearchDto, Optional<Integer> page, Category category) {
+		  Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
+		  
+		  Page<MainClassDto> classCt = classService.getCategoryClassPage(classSearchDto, pageable, category);
+		  model.addAttribute("classCt", classCt);
+		  model.addAttribute("classSearchDto", classSearchDto);
+		  model.addAttribute("maxPage", 5);
+		  model.addAttribute("category", category);
+		  
+		  return "/oneday/categoryClass";
+	  }
+	  
 	  
 	  //클래스 등록 페이지
 	  @GetMapping(value="/admin/oneday/new")

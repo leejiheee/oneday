@@ -37,6 +37,9 @@ public class OnedayClass{
 	@Column(nullable = false, length = 255)
 	private String region;
 	
+	@Column(nullable = false, length = 255)
+	private String regionDtl;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
 	@OnDelete(action= OnDeleteAction.CASCADE)
@@ -51,6 +54,7 @@ public class OnedayClass{
 		this.price = classFormDto.getPrice();
 		this.teacherNm = classFormDto.getTeacherNm();
 		this.region = classFormDto.getRegion();
+		this.regionDtl = classFormDto.getRegionDtl();
 		this.classDetail = classFormDto.getClassDetail();
 		this.classEnd = classFormDto.getClassEnd();
 		this.category = category;

@@ -26,7 +26,7 @@
 	</style>
 </th:block>
 <div class="main" layout:fragment="content">
-	<form role="form" action="/admin/oneday/upload" method="post"
+	<form role="form" action="/admin/oneday/ + ${classFormDto.id}" method="post"
 			enctype="multipart/form-data" th:object="${classFormDto}" name="classForm">
 			<input type="hidden" th:field="*{id}" />
 		<label class="form-label">카테고리</label>
@@ -58,9 +58,20 @@
     		<select class="form-select region" name="addressDo" id="addressDo1"></select>
     		<select  class="form-select region" name="addressSiGunGu" id="addressSiGunGu1"></select>
 		</div>
-		<div>
+				<div>
       		<input type="hidden" class="form-control" size="5" name="region" id="region" th:field="*{region}" />
 		</div>
+		
+		<div>
+      		<p id="region" th:text="*{region}" /></p>
+		</div>
+
+
+		<div class="mb-3">
+  			<label class="form-label">상세주소</label>
+ 			<input type="text" class="form-control" placeholder="상세 주소" name="regionDtl" th:field="*{regionDtl}">
+		</div> 
+		
 
 			<p th:if="${#fields.hasErrors('region')}" th:errors="*{region}"
 				class="fieldError">Incorrect Data</p>

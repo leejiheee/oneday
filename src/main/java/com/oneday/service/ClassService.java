@@ -97,11 +97,10 @@ public class ClassService {
 		
 		OnedayClass onedayClass = classRepository.findById(classFormDto.getId())
 							.orElseThrow(EntityNotFoundException::new);
-		
+
 		onedayClass.updateClass(classFormDto, category);
 		
 		List<Long> classImgIds = classFormDto.getClassImgIds();
-		System.out.println(classFormDto.getClassImgIds());
 		
 		for(int i = 0; i<classImgFileList.size(); i++) {
 			classImgService.updateClassImg(classImgIds.get(i), classImgFileList.get(i));
@@ -123,6 +122,14 @@ public class ClassService {
 	public Page<OnedayClass> getAdminClassPage(ClassSearchDto classSearchDto, Pageable pageable) {
 		Page<OnedayClass> classPage = classRepository.getAdminOnedayClassPage(classSearchDto, pageable);
 		return classPage;
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<MainClassDto> getCategoryClassPage(ClassSearchDto classSearchDto, Pageable pageable, Category category) {
+		
+		Page<MainClassDto> categoryClassPage = classRepository.getCategoryClassPage(classSearchDto, pageable, category);
+	
+		return categoryClassPage;
 	}
 	
 

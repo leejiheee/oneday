@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.oneday.dto.ClassSearchDto;
 import com.oneday.dto.MainClassDto;
+import com.oneday.entity.Category;
 import com.oneday.entity.OnedayClass;
 
 public interface ClassRepositoryCustom {
@@ -14,6 +15,7 @@ public interface ClassRepositoryCustom {
 	
 	Page<MainClassDto> getMainClassPage(ClassSearchDto classSearchDto, Pageable pageable);
 	
+	Page<MainClassDto> getCategoryClassPage(ClassSearchDto classSearchDto, Pageable pageable, Category category);
 	
 	
 }

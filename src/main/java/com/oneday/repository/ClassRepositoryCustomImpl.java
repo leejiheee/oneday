@@ -16,6 +16,7 @@ import com.oneday.dto.MainClassDto;
 import com.oneday.dto.QMainClassDto;
 import com.oneday.entity.Category;
 import com.oneday.entity.OnedayClass;
+import com.oneday.entity.QCategory;
 import com.oneday.entity.QClassImg;
 import com.oneday.entity.QOnedayClass;
 import com.querydsl.core.Tuple;
@@ -76,7 +77,7 @@ public class ClassRepositoryCustomImpl implements ClassRepositoryCustom{
 		
 		List<MainClassDto> content = queryFactory.select(
 				new QMainClassDto(onedayClass.id, onedayClass.classNm, onedayClass.classDetail, classImg.imgUrl,
-						onedayClass.price, onedayClass.teacherNm, onedayClass.region, onedayClass.category)
+						onedayClass.price, onedayClass.teacherNm, onedayClass.region, onedayClass.regionDtl, onedayClass.category)
 				)
 				.from(classImg)
 				.join(classImg.onedayClass, onedayClass)
@@ -92,6 +93,32 @@ public class ClassRepositoryCustomImpl implements ClassRepositoryCustom{
 				.where(classNmLike(classSearchDto.getSearchQuery())) .fetchOne();
 	
 		return new PageImpl<>(content, pageable, total);
+	}
+	
+	@Override
+	public Page<MainClassDto> getCategoryClassPage(ClassSearchDto classSearchDto, Pageable pageable, Category category) {
+		QOnedayClass onedayClass = QOnedayClass.onedayClass;
+		QClassImg classImg = QClassImg.classImg;
+		
+		QCategory categoryNm = QCategory.category;
+		
+		/*
+		 * 언젠가 돌아온다
+		 * List<MainClassDto> content = queryFactory.select( new
+		 * QMainClassDto(onedayClass.id, onedayClass.classNm, onedayClass.classDetail,
+		 * classImg.imgUrl, onedayClass.price, onedayClass.teacherNm,
+		 * onedayClass.region, onedayClass.regionDtl, onedayClass.category) )
+		 * .from(classImg)
+		 * .join(onedayClass).on(classImg.classId.eq(onedayClass.classId))
+		 * .join(category).on(onedayClass.categoryId.eq(category.categoryId))
+		 * .where(classImg.repimgYn.eq("Y"))
+		 * .where(classNmLike(classSearchDto.getSearchQuery()))
+		 * .where(categoryNm.categoryNm.eq("요리")) // categoryId가 1인 카테고리와 일치하는 조건 추가
+		 * .orderBy(onedayClass.id.desc()) .offset(pageable.getOffset())
+		 * .limit(pageable.getPageSize()) .fetch();
+		 */
+				
+		return null;
 	}
 
 	@Override
@@ -114,6 +141,7 @@ public class ClassRepositoryCustomImpl implements ClassRepositoryCustom{
 		
 		return new PageImpl<>(content, pageable, total);
 	}
+
 
 
 

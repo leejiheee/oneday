@@ -23,10 +23,12 @@ public class MainClassDto {
 	
 	private String region;
 	
+	private String regionDtl;
+	
 	private Category category;
 	
 	@QueryProjection
-	public MainClassDto(Long id, String classNm, String classDetail, String imgUrl, Integer price, String teacherNm, String region, Category category) {
+	public MainClassDto(Long id, String classNm, String classDetail, String imgUrl, Integer price, String teacherNm, String region, String regionDtl, Category category) {
 		this.id = id;
 		this.classDetail = classDetail;
 		this.classNm = classNm;
@@ -34,6 +36,7 @@ public class MainClassDto {
 		this.price = price;
 		this.teacherNm = teacherNm;
 		this.region = region;
+		this.regionDtl = regionDtl;
 		this.category = category;
 	}
 }

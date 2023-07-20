@@ -65,10 +65,11 @@
 			<p th:if="${#fields.hasErrors('region')}" th:errors="*{region}"
 				class="fieldError">Incorrect Data</p>
 		
-		<!-- <div class="mb-3">
+		<div class="mb-3">
   			<label class="form-label">상세주소</label>
- 			<input type="text" class="form-control" placeholder="상세 주소">
-		</div> -->
+ 			<input type="text" class="form-control" placeholder="상세 주소" name="regionDtl" th:field="*{regionDtl}">
+		</div> 
+		
 		<div class="mb-3">
   			<label th:for="price" class="form-label">가격</label>
  			<input type="text" class="form-control" placeholder="가격을 입력해주세요."

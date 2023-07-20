@@ -9,7 +9,7 @@
       <div class="container">
         <div class="row" >
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
-          th:each="class : ${classes.getContent()}">
+          th:each="class : ${classCt.getContent()}">
             <div class="property-item mb-30">
               <a th:href="'/oneday/' + ${class.id}" class="img">
                 <img th:src="${class.imgUrl}" alt="Image" class="img-fluid" style="width: 404px; height: 404px; "/>

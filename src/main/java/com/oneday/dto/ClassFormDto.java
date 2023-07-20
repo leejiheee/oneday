@@ -30,6 +30,8 @@ public class ClassFormDto {
 	@NotNull(message = "지역은 필수 입력입니다.")
 	private String region;
 	
+	private String regionDtl;
+	
 	private String classDetail;
 	
 	private ClassEnd classEnd;
