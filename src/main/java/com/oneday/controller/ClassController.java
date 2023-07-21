@@ -40,7 +40,7 @@ public class ClassController {
 		private final ClassService classService;
 	  
 	  //클래스 리스트
-	  @GetMapping(value="/oneday/list")
+	  @GetMapping(value= "/oneday/list")
 	  public String classList(Model model, ClassSearchDto classSearchDto, Optional<Integer> page) {
 		  Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
 		  
@@ -51,21 +51,21 @@ public class ClassController {
 
 	  return "/oneday/classList"; 
 	 }
-	 
+
 	  @GetMapping(value = "/oneday/list/1")
-	  public String categoryClass(Model model, ClassSearchDto classSearchDto, Optional<Integer> page, Category category) {
+	  public String categoryClass(Model model, ClassSearchDto classSearchDto, Optional<Integer> page) {
 		  Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
-		  
-		  Page<MainClassDto> classCt = classService.getCategoryClassPage(classSearchDto, pageable, category);
+		  System.out.println("여기 오긴함?????");
+		  Page<MainClassDto> classCt = classService.getCategoryClassPage(classSearchDto, pageable);
+		  System.out.println("그럼 여기는????????");
 		  model.addAttribute("classCt", classCt);
 		  model.addAttribute("classSearchDto", classSearchDto);
 		  model.addAttribute("maxPage", 5);
-		  model.addAttribute("category", category);
 		  
 		  return "/oneday/categoryClass";
 	  }
 	  
-	  
+
 	  //클래스 등록 페이지
 	  @GetMapping(value="/admin/oneday/new")
 	  public String classForm(Model model) {

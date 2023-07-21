@@ -9,7 +9,7 @@
       <div class="container">
         <div class="row" >
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
-          th:each="class : ${classCt.getContent()}">
+          th:each="class : ${classCt.getContent()}" >
             <div class="property-item mb-30">
               <a th:href="'/oneday/' + ${class.id}" class="img">
                 <img th:src="${class.imgUrl}" alt="Image" class="img-fluid" style="width: 404px; height: 404px; "/>
@@ -48,7 +48,7 @@
         </div>
         <div class="row align-items-center py-5" style="margin: 0 auto;">
           <div class="col-lg-6 text-center" style="width:100% !important;">
-          <nav th:with="start=${(classes.number/maxPage)*maxPage + 1}, 
+<!--           <nav th:with="start=${(classes.number/maxPage)*maxPage + 1}, 
 						end=(${(classes.totalPages == 0) ? 1 : (start + (maxPage - 1) < classes.totalPages ? 
 						start + (maxPage - 1) : classes.totalPages)})">
             <ul class="custom-pagination" style="list-style: none; display: flex; justify-content: center;">
@@ -61,7 +61,7 @@
 					<a th:href="@{'/oneday/list' + '?searchQuery=' + ${classSearchDto.searchQuery} + '&page=' + ${classes.number + 1}}">▶</a>
 				</li>
             </ul>
-            </nav>
+            </nav> -->
           </div>
         </div>
       </div>

@@ -92,6 +92,8 @@ public class ClassService {
 		return classFormDto;
 	}
 	
+	
+	
 	//클래스 수정하기
 	public Long updateClass(ClassFormDto classFormDto, Category category ,List<MultipartFile> classImgFileList)throws Exception {
 		
@@ -125,10 +127,10 @@ public class ClassService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<MainClassDto> getCategoryClassPage(ClassSearchDto classSearchDto, Pageable pageable, Category category) {
+	public Page<MainClassDto> getCategoryClassPage(ClassSearchDto classSearchDto, Pageable pageable) {
 		
-		Page<MainClassDto> categoryClassPage = classRepository.getCategoryClassPage(classSearchDto, pageable, category);
-	
+		Page<MainClassDto> categoryClassPage = classRepository.getMainClassPage(classSearchDto, pageable);
+		System.out.println(categoryClassPage.toString());
 		return categoryClassPage;
 	}
 	
@@ -137,6 +139,7 @@ public class ClassService {
 	public Page<MainClassDto> getMainClassPage(ClassSearchDto classSearchDto, Pageable pageable) {
 
 		Page<MainClassDto> mainClassPage = classRepository.getMainClassPage(classSearchDto, pageable);
+		
 		return mainClassPage;
 	}
 

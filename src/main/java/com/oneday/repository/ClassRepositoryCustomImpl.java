@@ -100,23 +100,21 @@ public class ClassRepositoryCustomImpl implements ClassRepositoryCustom{
 		QOnedayClass onedayClass = QOnedayClass.onedayClass;
 		QClassImg classImg = QClassImg.classImg;
 		
-		QCategory categoryNm = QCategory.category;
+		QCategory category1 = QCategory.category;
 		
-		/*
-		 * 언젠가 돌아온다
-		 * List<MainClassDto> content = queryFactory.select( new
-		 * QMainClassDto(onedayClass.id, onedayClass.classNm, onedayClass.classDetail,
-		 * classImg.imgUrl, onedayClass.price, onedayClass.teacherNm,
-		 * onedayClass.region, onedayClass.regionDtl, onedayClass.category) )
-		 * .from(classImg)
-		 * .join(onedayClass).on(classImg.classId.eq(onedayClass.classId))
-		 * .join(category).on(onedayClass.categoryId.eq(category.categoryId))
-		 * .where(classImg.repimgYn.eq("Y"))
-		 * .where(classNmLike(classSearchDto.getSearchQuery()))
-		 * .where(categoryNm.categoryNm.eq("요리")) // categoryId가 1인 카테고리와 일치하는 조건 추가
-		 * .orderBy(onedayClass.id.desc()) .offset(pageable.getOffset())
-		 * .limit(pageable.getPageSize()) .fetch();
-		 */
+		  List<MainClassDto> content = queryFactory.select(
+				  new QMainClassDto(onedayClass.id, onedayClass.classNm, onedayClass.classDetail, classImg.imgUrl, onedayClass.price, onedayClass.teacherNm,
+		  onedayClass.region, onedayClass.regionDtl, onedayClass.category) )
+		  .from(classImg)
+		  .join(classImg.onedayClass, onedayClass)
+		  .where(classImg.repimgYn.eq("Y"))
+		  .join(onedayClass.category, category1)
+		  .where(classNmLike(classSearchDto.getSearchQuery()))
+		  .orderBy(onedayClass.id.desc())
+		  .offset(pageable.getOffset())
+		  .limit(pageable.getPageSize())
+		  .fetch();
+
 				
 		return null;
 	}

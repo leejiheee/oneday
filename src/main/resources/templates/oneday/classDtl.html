@@ -67,15 +67,13 @@
         </thead>
         <tbody></tbody>
     </table>
+        <!-- 시간 리스트 요소 -->
+    <div id="timeList"></div>
 </div>
 
             <div class="d-block agent-box p-5">
               <div class="img mb-4">
-                <img
-                  src="images/person_2-min.jpg"
-                  alt="Image"
-                  class="img-fluid"
-                />
+
               </div>
               <div class="text">
                 <h3 class="mb-0">Alicia Huston</h3>
@@ -84,20 +82,7 @@
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Ratione laborum quo quos omnis sed magnam id ducimus saepe
                 </p>
-                <ul class="list-unstyled social dark-hover d-flex">
-                  <li class="me-1">
-                    <a href="#"><span class="icon-instagram"></span></a>
-                  </li>
-                  <li class="me-1">
-                    <a href="#"><span class="icon-twitter"></span></a>
-                  </li>
-                  <li class="me-1">
-                    <a href="#"><span class="icon-facebook"></span></a>
-                  </li>
-                  <li class="me-1">
-                    <a href="#"><span class="icon-linkedin"></span></a>
-                  </li>
-                </ul>
+
               </div>
             </div>
           </div>
@@ -200,6 +185,8 @@
                 column.innerText = autoLeftPad(exceptDay.getDate(), 2);
                 column.style.color = "#A9A9A9";
             }
+            
+            
 
             // @brief   전월, 명월 음영처리
             // @details 현재년과 선택 년도가 같은경우
@@ -259,9 +246,19 @@
                     column.onclick = function(){ calendarChoiceDay(this); }
                 }
             }
+            
+            // @brief 클릭 이벤트 핸들러 등록
+            // @details 클릭한 날짜의 셀(column)에 클릭 이벤트 핸들러를 등록하여 calendarChoiceDay 함수를 호출한다.
+            column.onclick = function () {
+                calendarChoiceDay(this);
+                
+            };
+            
             dom++;
         }
     }
+    
+
 
     /**
      * @brief   날짜 선택
@@ -289,8 +286,45 @@
 
         // @param 선택일 클래스명 변경
         column.classList.add("choiceDay");
+        
+        var selectedDate = document.getElementById("calYear").innerText + '-' + autoLeftPad(document.getElementById("calMonth").innerText, 2) + '-' + autoLeftPad(column.innerText, 2);
+        console.log('Selected Date:', selectedDate);
+    }
+    
+    // 시간 리스트 요소를 가리키는 변수
+    const timeListDiv = document.getElementById('timeList');
+
+    // 시간 리스트를 생성하고 보여주는 함수
+    function showTimeList(date) {
+        // 서버로부터 해당 날짜에 대한 시간 데이터를 가져온다고 가정 (AJAX 요청 등)
+        const timeData = ['10:00', '13:00', '16:00']; // 예시 데이터
+
+        // 시간 리스트 요소 초기화
+        timeListDiv.innerHTML = '';
+
+        // 가져온 시간 데이터를 순회하며 시간 리스트에 추가
+        for (const time of timeData) {
+            const timeItem = document.createElement('p');
+            timeItem.textContent = time;
+            timeListDiv.appendChild(timeItem);
+        }
     }
 
+    // 달력 셀 클릭 이벤트 핸들러 등록
+    function handleCalendarCellClick(column) {
+        const selectedDate = document.getElementById("calYear").innerText + '-' + autoLeftPad(document.getElementById("calMonth").innerText, 2) + '-' + autoLeftPad(column.innerText, 2);
+        showTimeList(selectedDate);
+    }
+
+    // 달력 셀 클릭 이벤트 핸들러를 각 셀에 등록
+    const calendarCells = document.querySelectorAll('.scriptCalendar td');
+    calendarCells.forEach(cell => {
+        cell.addEventListener('click', function() {
+            handleCalendarCellClick(this);
+        });
+    });
+
+    
     /**
      * @brief   숫자 두자릿수( 00 ) 변경
      * @details 자릿수가 한자리인 ( 1, 2, 3등 )의 값을 10, 11, 12등과 같은 두자리수 형식으로 맞추기위해 0을 붙인다.
