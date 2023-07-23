@@ -9203,11 +9203,8 @@ textarea.form-control-lg {
     color: #fff !important; }
 
 .site-nav {
-  padding-top: 20px;
+  padding-top: 10px;
   padding-bottom: 20px;
-  position: absolute;
-  top: 0;
-  z-index: 9;
   width: 100%; }
   .site-nav h1, .site-nav .h1 {
     margin: 0;
@@ -9222,20 +9219,20 @@ textarea.form-control-lg {
         padding: 10px 15px;
         display: inline-block;
         text-decoration: none !important;
-        color: white; }
+        color: black; }
         .site-nav .site-navigation .site-menu > li > a:hover {
-          color: black; }
-      .site-nav .site-navigation .site-menu > li.cta-button a {
+          color: white; }
+/*       .site-navrgb (0, 0, 0)e-navigation .site-menu > li.cta-button a {
         padding: 6px 20px;
-        border: 2px solid rgba(0, 0, 0, 0.1);
-        color: #000;
-        border-radius: 30px; }
+        border: 2rgb(255, 255, 255)lid rgba(0, 0, 0, 0.1);
+        color: black;
+        border-radius: 30px; } */
         .site-nav .site-navigation .site-menu > li.cta-button a:hover {
-          color: black;
+          color: white;
           background: #00204a;
           border-color: #00204a; }
       .site-nav .site-navigation .site-menu > li.active > a {
-        color: white; }
+        color: black; }
     .site-nav .site-navigation .site-menu .has-children {
       position: relative; }
       .site-nav .site-navigation .site-menu .has-children > a {
@@ -9660,6 +9657,7 @@ textarea {
   background-color: transparent;
   padding: 20px 30px;
   position: relative;
+  z-index: 9;
   float: left;
   width: 100%;
   border-radius: 7px;

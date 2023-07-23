@@ -1,25 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:fragment="header"
 				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-	       <div
-      class="hero page-inner overlay"
-      style="background-image: url('/images/걸작.png')"
-    >
-      <div class="container">
-        <div class="row justify-content-center align-items-center">
-          <div class="col-lg-9 text-center mt-5">
-            <h1 class="heading" data-aos="fade-up">다양한 클래스를 체험해보세요!</h1>
 
-            <nav
-              aria-label="breadcrumb"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
 	   
 	    <nav class="site-nav">
       <div class="container">
@@ -53,17 +35,10 @@
               <li><a href="contact.html" sec:authorize="isAuthenticated()">내 정보</a></li>
               <li><a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
             </ul>
-
-            <a
-              href="#"
-              class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
-              data-toggle="collapse"
-              data-target="#main-navbar"
-            >
-              <span></span>
-            </a>
           </div>
         </div>
       </div>
     </nav>
+
+
 </html>

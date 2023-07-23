@@ -80,6 +80,13 @@
 		<div class="mb-3">
  			<label th:for="classDetail" class="form-label">상세정보</label>
   			<textarea class="form-control" id="fg" rows="10" th:field="*{classDetail}"></textarea>
+  			
+  <div id="dateTimesContainer">
+    <!-- 날짜와 시간 입력을 담을 컨테이너 -->
+  </div>
+  <button type="button" onclick="addDateTime(); return false;">날짜와 시간 추가</button>
+  <button type="button" onclick="saveSchedules(); return false;">예약</button>
+  			
 		<div class="form-group row" th:each="num: ${#numbers.sequence(1,5)}">
 			<div class="col-md-12">
 				<label for="formFile" class="form-label" th:text="클래스이미지 + ${num}"></label>
@@ -254,25 +261,96 @@
 		        }
 		    }
 		}
-		
+		// 예약된 날짜와 시간을 저장하는 배열
+		const schedules = [];
 
-	
-/* 		  function getSelectedValues() {
-			    var selectElements = document.getElementsByClassName("region");
-			    var selectedValues = [];
+		// 예약된 날짜와 시간을 저장하는 함수
+		function saveSchedules() {
+		  console.log("예약된 날짜와 시간들:", schedules);
+		}
 
-			    for (var i = 0; i < selectElements.length; i++) {
-			      var selectElement = selectElements[i];
-			      var selectedOptions = selectElement.selectedOptions;
-			      for (var j = 0; j < selectedOptions.length; j++) {
-			        var option = selectedOptions[j];
-			        selectedValues.push(option.value);
-			      }
-			    }
+		// 시간 입력 필드를 동적으로 추가하는 함수
+		function addTimeInput(container) {
+		  const timeInput = document.createElement("input");
+		  timeInput.type = "time";
+		  timeInput.classList.add("timeInput");
 
-			    var resultElement = document.getElementById("region");
-			    resultElement.textContent = "지역: " + selectedValues.join(" / ");
-			  } */
+		  const removeButton = document.createElement("button");
+		  removeButton.innerText = "시간 제거";
+		  removeButton.onclick = function() {
+		    container.removeChild(timeInput);
+		    container.removeChild(removeButton);
+
+		    // 해당 날짜의 시간 목록에서 제거
+		    const dateIndex = schedules.indexOf(container.dataset.date);
+		    if (dateIndex !== -1) {
+		      schedules[dateIndex].times = schedules[dateIndex].times.filter(time => time !== timeInput.value);
+		    }
+		  };
+
+		  container.appendChild(timeInput);
+		  container.appendChild(removeButton);
+
+		  // 해당 날짜의 시간 목록에 추가
+		  const dateIndex = schedules.findIndex(item => item.date === container.dataset.date);
+		  if (dateIndex !== -1) {
+		    schedules[dateIndex].times.push(timeInput.value);
+		  } else {
+		    schedules.push({
+		      date: container.dataset.date,
+		      times: [timeInput.value]
+		    });
+		  }
+		}
+
+		// 날짜와 시간 입력 필드를 동적으로 추가하는 함수
+		function addDateTime() {
+		  const dateContainer = document.createElement("div");
+		  dateContainer.classList.add("dateTime");
+
+		  const dateInput = document.createElement("input");
+		  dateInput.type = "date";
+		  dateInput.classList.add("dateInput");
+
+		  const addButton = document.createElement("button");
+		  addButton.innerText = "시간 추가";
+		  addButton.type = "button"; // 버튼의 타입을 'button'으로 지정
+		  addButton.onclick = function() {
+		    addTimeInput(dateContainer);
+		  };
+
+		  dateContainer.appendChild(dateInput);
+		  dateContainer.appendChild(addButton);
+
+		  document.getElementById("dateTimesContainer").appendChild(dateContainer);
+		}
+
+
+		// 예약된 날짜와 시간을 저장하는 함수
+		function saveSchedules() {
+		  const dateTimes = document.querySelectorAll(".dateTime");
+		  const schedules = [];
+
+		  dateTimes.forEach(dateTime => {
+		    const dateInput = dateTime.querySelector(".dateInput");
+		    const timeInputs = dateTime.querySelectorAll(".timeInput");
+
+		    const selectedDate = dateInput.value;
+		    const selectedTimes = [];
+		    timeInputs.forEach(input => {
+		      selectedTimes.push(input.value);
+		    });
+
+		    schedules.push({
+		      date: selectedDate,
+		      times: selectedTimes
+		    });
+		  });
+
+		  // 예약에 선택된 날짜와 시간들을 사용하면 됩니다.
+		  console.log("예약된 날짜와 시간들:", schedules);
+		  
+		}
 		</script>
 	</th:block>
 </html>
