@@ -2,6 +2,7 @@ package com.oneday.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,12 +19,16 @@ import com.oneday.dto.ClassSearchDto;
 import com.oneday.dto.MainClassDto;
 import com.oneday.entity.Category;
 import com.oneday.entity.ClassImg;
+import com.oneday.entity.Date;
 import com.oneday.entity.Member;
 import com.oneday.entity.OnedayClass;
+import com.oneday.entity.Schedule;
+import com.oneday.entity.Time;
 import com.oneday.repository.CategoryRepository;
 import com.oneday.repository.ClassImgRepository;
 import com.oneday.repository.ClassRepository;
 import com.oneday.repository.MemberRepository;
+import com.oneday.repository.ScheduleRepository;
 import com.oneday.service.*;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -39,14 +44,40 @@ public class ClassService {
 	private final ClassImgRepository classImgRepository;
 	private final CategoryRepository categoryRepository;
 	private final MemberRepository memberRepository;
+	private final ScheduleRepository scheduleRepository;
 	
 	//클래스 등록
 	public Long saveClass(ClassFormDto classFormDto, List<MultipartFile> classImgFileList) throws Exception {
+		System.out.println("오잉ㅇ???");
 		Category category = categoryRepository.findById(classFormDto.getCategoryId())
 												.orElseThrow(EntityNotFoundException::new);
 		
-		OnedayClass onedayClass = classFormDto.createClass(category);
+		Schedule schedule = scheduleRepository.findById(classFormDto.getScheduleId())
+				.orElseThrow(EntityNotFoundException::new);
+		
+		
+		OnedayClass onedayClass = classFormDto.createClass(category, schedule);
+		// Dates 저장
+        List<Date> dateEntities = new ArrayList<>();
+        for (String dateStr : classFormDto.getDates()) {
+            Date dateEntity = new Date();
+            dateEntity.setDate(dateStr);
+            dateEntities.add(dateEntity);
+        }
 
+        // Times 저장
+        List<Time> timeEntities = new ArrayList<>();
+        for (String timeStr : classFormDto.getTimes()) {
+            Time timeEntity = new Time();
+            timeEntity.setTime(timeStr);
+            timeEntities.add(timeEntity);
+        }
+
+        schedule.setDates(dateEntities);
+        schedule.setTimes(timeEntities);
+
+        onedayClass.addSchedule(schedule);
+		
 		classRepository.save(onedayClass);
 		
 		for(int i=0; i<classImgFileList.size(); i++) {
@@ -60,6 +91,8 @@ public class ClassService {
 			}
 			classImgService.saveClassImg(classImg, classImgFileList.get(i));
 		}
+		
+		
 		
 		return onedayClass.getId();
 	}

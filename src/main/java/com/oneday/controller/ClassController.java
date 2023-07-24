@@ -3,6 +3,7 @@ package com.oneday.controller;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +27,10 @@ import com.oneday.dto.ClassFormDto;
 import com.oneday.dto.ClassSearchDto;
 import com.oneday.dto.MainClassDto;
 import com.oneday.entity.Category;
+import com.oneday.entity.Date;
 import com.oneday.entity.OnedayClass;
+import com.oneday.entity.Schedule;
+import com.oneday.entity.Time;
 import com.oneday.service.ClassService;
 
 import jakarta.validation.Valid;
@@ -34,10 +40,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 @Controller
-@RequiredArgsConstructor
 public class ClassController {
 
 		private final ClassService classService;
+		
+		@Autowired
+	    public ClassController(ClassService classService) {
+	        this.classService = classService;
+	    }
 	  
 	  //클래스 리스트
 	  @GetMapping(value= "/oneday/list")
@@ -76,11 +86,23 @@ public class ClassController {
 	  
 	  //클래스 클래스 이미지 등록(insert)
 	  @PostMapping(value="/admin/oneday/upload")
-	  public String classNew(@Valid ClassFormDto classFormDto, BindingResult bindingResult,
+	  public String classNew(@Valid @ModelAttribute ClassFormDto classFormDto, BindingResult bindingResult,
 			  Model model, @RequestParam("classImgFile") List<MultipartFile> classImgFileList) {
-		  if(bindingResult.hasErrors()) {
-			  return "oneday/classForm";
-		  }
+		  
+			/* classFormDto.printDatesAndTimes(); */
+		  System.out.println("요기는?????? 왔겠지???????");
+			/*
+			 * if (bindingResult.hasErrors()) { System.out.println("입력값이 유효하지 않습니다."); for
+			 * (FieldError error : bindingResult.getFieldErrors()) {
+			 * System.out.println("Field: " + error.getField() + ", Message: " +
+			 * error.getDefaultMessage()); } return "oneday/classForm"; }
+			 */
+		    
+		    // 여기서 폼으로부터 입력받은 날짜와 시간을 사용하여 스케줄을 생성
+		    Schedule schedule = createScheduleFromClassFormDto(classFormDto);
+
+		    // 생성한 스케줄을 ClassFormDto 객체에 설정
+		    classFormDto.setScheduleId(schedule.getId());
 		  
 		  //첫번째 이미지가 있는지 없는지 검사
 		  if(classImgFileList.get(0).isEmpty() && classFormDto.getId() == null) {
@@ -100,6 +122,18 @@ public class ClassController {
 			  
 	  }
 	  
+	  private Schedule createScheduleFromClassFormDto(ClassFormDto classFormDto) {
+		    // Schedule 객체 생성
+		    Schedule schedule = new Schedule();
+		    
+		    
+		    
+		    // 예시: schedule.setStartDate(startDate);
+		    // 예시: schedule.setEndDate(endDate);
+		    // 예시: schedule.setStartTime(startTime);
+		    // 예시: schedule.setEndTime(endTime);
+		    return schedule;
+		}
 	  
 	  @GetMapping(value="/oneday/{classId}")
 	  public String classDtl(Model model, @PathVariable("classId") Long classId) {
