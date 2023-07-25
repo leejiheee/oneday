@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.oneday.dto.MainClassDto;
 import com.oneday.entity.Category;
+import com.oneday.entity.ClassInfo;
 import com.oneday.entity.OnedayClass;
 
 public interface ClassRepository extends JpaRepository<OnedayClass, Long>, ClassRepositoryCustom{

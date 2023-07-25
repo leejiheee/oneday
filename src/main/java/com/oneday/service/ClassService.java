@@ -15,20 +15,19 @@ import org.thymeleaf.util.StringUtils;
 
 import com.oneday.dto.ClassFormDto;
 import com.oneday.dto.ClassImgDto;
+import com.oneday.dto.ClassInfoDto;
 import com.oneday.dto.ClassSearchDto;
 import com.oneday.dto.MainClassDto;
 import com.oneday.entity.Category;
 import com.oneday.entity.ClassImg;
-import com.oneday.entity.Date;
+import com.oneday.entity.ClassInfo;
 import com.oneday.entity.Member;
 import com.oneday.entity.OnedayClass;
-import com.oneday.entity.Schedule;
-import com.oneday.entity.Time;
 import com.oneday.repository.CategoryRepository;
 import com.oneday.repository.ClassImgRepository;
+import com.oneday.repository.ClassInfoRepository;
 import com.oneday.repository.ClassRepository;
 import com.oneday.repository.MemberRepository;
-import com.oneday.repository.ScheduleRepository;
 import com.oneday.service.*;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -40,45 +39,38 @@ import lombok.RequiredArgsConstructor;
 public class ClassService {
 
 	private final ClassRepository classRepository;
+	private final ClassInfoRepository classInfoRepository;
 	private final ClassImgService classImgService;
 	private final ClassImgRepository classImgRepository;
 	private final CategoryRepository categoryRepository;
 	private final MemberRepository memberRepository;
-	private final ScheduleRepository scheduleRepository;
+
 	
 	//클래스 등록
 	public Long saveClass(ClassFormDto classFormDto, List<MultipartFile> classImgFileList) throws Exception {
-		System.out.println("오잉ㅇ???");
+		
 		Category category = categoryRepository.findById(classFormDto.getCategoryId())
 												.orElseThrow(EntityNotFoundException::new);
 		
-		Schedule schedule = scheduleRepository.findById(classFormDto.getScheduleId())
-				.orElseThrow(EntityNotFoundException::new);
+		OnedayClass onedayClass = classFormDto.createClass(category, classFormDto.getClassInfos());
 		
+		int maxUser = classFormDto.getMaxUser();
+		int nowUser = classFormDto.getMaxUser();
 		
-		OnedayClass onedayClass = classFormDto.createClass(category, schedule);
-		// Dates 저장
-        List<Date> dateEntities = new ArrayList<>();
-        for (String dateStr : classFormDto.getDates()) {
-            Date dateEntity = new Date();
-            dateEntity.setDate(dateStr);
-            dateEntities.add(dateEntity);
+        for (ClassInfoDto classInfoDto : classFormDto.getClassInfos()) {
+            ClassInfo classInfo = new ClassInfo();
+            classInfo.setDate(classInfoDto.getDate());
+            classInfo.setTime(classInfoDto.getTime());
+            classInfo.setMaxUser(maxUser);
+            classInfo.setNowUser(nowUser);
+            classInfo.setOnedayClass(onedayClass);
+            classInfoRepository.save(classInfo);
+            System.out.println("GGGGGGGGGGG");
         }
+        
 
-        // Times 저장
-        List<Time> timeEntities = new ArrayList<>();
-        for (String timeStr : classFormDto.getTimes()) {
-            Time timeEntity = new Time();
-            timeEntity.setTime(timeStr);
-            timeEntities.add(timeEntity);
-        }
+        classRepository.save(onedayClass);
 
-        schedule.setDates(dateEntities);
-        schedule.setTimes(timeEntities);
-
-        onedayClass.addSchedule(schedule);
-		
-		classRepository.save(onedayClass);
 		
 		for(int i=0; i<classImgFileList.size(); i++) {
 			ClassImg classImg = new ClassImg();

@@ -24,13 +24,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oneday.dto.ClassFormDto;
+import com.oneday.dto.ClassInfoDto;
 import com.oneday.dto.ClassSearchDto;
 import com.oneday.dto.MainClassDto;
 import com.oneday.entity.Category;
-import com.oneday.entity.Date;
 import com.oneday.entity.OnedayClass;
-import com.oneday.entity.Schedule;
-import com.oneday.entity.Time;
 import com.oneday.service.ClassService;
 
 import jakarta.validation.Valid;
@@ -89,27 +87,24 @@ public class ClassController {
 	  public String classNew(@Valid @ModelAttribute ClassFormDto classFormDto, BindingResult bindingResult,
 			  Model model, @RequestParam("classImgFile") List<MultipartFile> classImgFileList) {
 		  
-			/* classFormDto.printDatesAndTimes(); */
-		  System.out.println("요기는?????? 왔겠지???????");
-			/*
-			 * if (bindingResult.hasErrors()) { System.out.println("입력값이 유효하지 않습니다."); for
-			 * (FieldError error : bindingResult.getFieldErrors()) {
-			 * System.out.println("Field: " + error.getField() + ", Message: " +
-			 * error.getDefaultMessage()); } return "oneday/classForm"; }
-			 */
-		    
-		    // 여기서 폼으로부터 입력받은 날짜와 시간을 사용하여 스케줄을 생성
-		    Schedule schedule = createScheduleFromClassFormDto(classFormDto);
-
-		    // 생성한 스케줄을 ClassFormDto 객체에 설정
-		    classFormDto.setScheduleId(schedule.getId());
+			
+			  if (bindingResult.hasErrors()) { System.out.println("입력값이 유효하지 않습니다.");
+			  for(FieldError error : bindingResult.getFieldErrors()) {
+			  System.out.println("Field: " + error.getField() + ", Message: " +
+			  error.getDefaultMessage()); } return "oneday/classForm"; }
+			 
 		  
 		  //첫번째 이미지가 있는지 없는지 검사
 		  if(classImgFileList.get(0).isEmpty() && classFormDto.getId() == null) {
 			  model.addAttribute("errorMessage", "첫번째 클래스 이미지는 필수입니다.");
 			  return "oneday/classForm";
 		  }
+		  System.out.println(classFormDto.getClassDetail() + "FDFF");
 		  
+		  for(ClassInfoDto classInfo : classFormDto.getClassInfos()) {
+			  System.out.println(classInfo.getDate() + "JJJ");
+			  
+		  }
 		  try {
 			classService.saveClass(classFormDto, classImgFileList);
 		} catch (Exception e) {
@@ -122,23 +117,15 @@ public class ClassController {
 			  
 	  }
 	  
-	  private Schedule createScheduleFromClassFormDto(ClassFormDto classFormDto) {
-		    // Schedule 객체 생성
-		    Schedule schedule = new Schedule();
-		    
-		    
-		    
-		    // 예시: schedule.setStartDate(startDate);
-		    // 예시: schedule.setEndDate(endDate);
-		    // 예시: schedule.setStartTime(startTime);
-		    // 예시: schedule.setEndTime(endTime);
-		    return schedule;
-		}
-	  
 	  @GetMapping(value="/oneday/{classId}")
 	  public String classDtl(Model model, @PathVariable("classId") Long classId) {
 		  ClassFormDto classFormDto = classService.getClassDtl(classId);
 		  model.addAttribute("class", classFormDto);
+		  
+		  System.out.println(classFormDto.getClassInfos() + "!~!~!~!~!~!~!~!~!~!~!~!");
+		  for(ClassInfoDto test : classFormDto.getClassInfos()) {
+			  System.out.println(test.getDate() +"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		  }
 		  return "oneday/classDtl";
 	  }
 	  

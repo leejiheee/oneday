@@ -1,6 +1,7 @@
 package com.oneday.dto;
 
 import com.oneday.entity.Category;
+import com.oneday.entity.ClassInfo;
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.Getter;
@@ -26,6 +27,8 @@ public class MainClassDto {
 	private String regionDtl;
 	
 	private Category category;
+	
+	private ClassInfo classInfo;
 	
 	@QueryProjection
 	public MainClassDto(Long id, String classNm, String classDetail, String imgUrl, Integer price, String teacherNm, String region, String regionDtl, Category category) {

@@ -8,67 +8,127 @@
 </head>
 
 <th:block layout:fragment="css">
-<style type="text/css">
-	*{
-		font-family: 'Pretendard-Regular', sans-serif;}
-	td {
-            width: 50px;
-            height: 50px;
-        }
+	<style type="text/css">
+* {
+	font-family: 'Pretendard-Regular', sans-serif;
+}
 
-        .Calendar { 
-            text-align: center;
-            margin: 0 auto; 
-        }
+td {
+	width: 50px;
+	height: 50px;
+}
 
-        .Calendar>thead>tr:first-child>td { font-weight: bold; }
+.Calendar {
+	text-align: center;
+	margin: 0 auto;
+}
 
-        .Calendar>thead>tr:last-child>td {
-            background-color: gray;
-            color: white;
-        }        
+.Calendar>thead>tr:first-child>td {
+	font-weight: bold;
+}
 
-        .pastDay{ background-color: lightgray; }
+.Calendar>thead>tr:last-child>td {
+	background-color: gray;
+	color: white;
+}
 
-        .today{            
-            background-color: #FFCA64;            
-            cursor: pointer;
-        }
+.pastDay {
+	background-color: lightgray;
+}
 
-        .futureDay{            
-            background-color: #FFFFFF;
-            cursor: pointer;
-        }
+.today {
+	background-color: #FFCA64;
+	cursor: pointer;
+}
 
-        .futureDay.choiceDay, .today.choiceDay{            
-            background-color: #3E85EF;            
-            color: #fff;
-            cursor: pointer;
-        }
+.futureDay {
+	background-color: #FFFFFF;
+	cursor: pointer;
+}
+
+.futureDay.choiceDay, .today.choiceDay {
+	background-color: #3E85EF;
+	color: #fff;
+	cursor: pointer;
+}
+
+.form_radio_btn {
+	width: 47%;
+	height: 45px;
+	border: 1px solid #EAE7E7;
+	border-radius: 10px;
+}
+
+.form_radio_btn input[type=radio] {
+	display: none;
+}
+
+.form_radio_btn label {
+	display: block;
+	border-radius: 10px;
+	margin: 0 auto;
+	text-align: center;
+	height: -webkit-fill-available;
+	line-height: 45px;
+}
+
+/* Checked */
+.form_radio_btn input[type=radio]:checked+label {
+	background: #184DA0;
+	color: #fff;
+}
+
+/* Hover */
+.form_radio_btn label:hover {
+	color: #666;
+}
+
+/* Disabled */
+.form_radio_btn input[type=radio]+label {
+	background: #F9FAFC;
+	color: #666;
+}
 </style>
 </th:block>
-    <div class="section" layout:fragment="content">
-      <div class="container">
-		    <div class="section">
-      <div class="container">
-      <input type="hidden" id="classId" th:value="${class.id}">
-        <div class="row justify-content-between" >
-          <div class="col-lg-7">
-           	<div >
-           		<img th:src="${class.classImgDtoList[0].imgUrl}" alt="Image" class="img-fluid" style="width: 700px; height:500px; border-radius: 20px;"/>
-           	</div>
-           	<div>
-           		<div style="margin-top: 30px; padding-left: 20px;">
-           			<h3 th:text="${class.classNm}" style="font-weight: 400; font-size: 26px;"></h3>
-           		</div>
-           		<div>
-           			
-           		</div>
-           	</div>
-          </div>
-          <div class="col-lg-4">
-<div>
-     <table class="Calendar">
+<div class="section" layout:fragment="content">
+	<div class="container">
+		<div class="section">
+			<div class="container">
+				<input type="hidden" id="classId" th:value="${class.id}">
+				<div class="row justify-content-between">
+					<div class="col-lg-7">
+						<div>
+							<img th:src="${class.classImgDtoList[0].imgUrl}" alt="Image"
+								class="img-fluid"
+								style="width: 700px; height: 500px; border-radius: 20px;" />
+						</div>
+						<div>
+							<div style="margin-top: 30px; padding-left: 20px;">
+								<h3 th:text="${class.classNm}"
+									style="font-weight: 400; font-size: 26px;"></h3>
+							</div>
+							<div></div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div>
+
+							<div>
+								<div class="mb-3">
+									<label for="userSex" class="form-label">날짜</label>
+									<div
+										class="form_toggle row-vh d-flex flex-row justify-content-between">
+										<div class="form_radio_btn radio_male"
+											th:each="info, status: ${class.classInfos}">
+											<input id="radio-1" type="radio" name="date" th:value="${info.date}">
+											<h3>짱나</h3>
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<!--      <table class="Calendar">
         <thead>
             <tr>
                 <td onClick="prevCalendar();" style="cursor:pointer;">&#60;</td>
@@ -92,127 +152,135 @@
         <tbody>
         </tbody>
     </table>
-    <!-- 선택한 날짜를 출력할 HTML 요소 -->
-<div id="selectedDate"></div>
-</div>
+    선택한 날짜를 출력할 HTML 요소
+<div id="selectedDate"></div> -->
+						</div>
 
-            <div class="d-block agent-box p-5">
-              <div class="img mb-4">
+						<div class="d-block agent-box p-5">
+							<div class="img mb-4"></div>
+							<div class="text">
+								<h3 class="mb-0">Alicia Huston</h3>
+								<div class="meta mb-3">Real Estate</div>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+									Ratione laborum quo quos omnis sed magnam id ducimus saepe</p>
 
-              </div>
-              <div class="text">
-                <h3 class="mb-0">Alicia Huston</h3>
-                <div class="meta mb-3">Real Estate</div>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Ratione laborum quo quos omnis sed magnam id ducimus saepe
-                </p>
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-    </div>
-    	<th:block layout:fragment="script">
-<script>
-        window.onload = function () { buildCalendar(); }    // 웹 페이지가 로드되면 buildCalendar 실행
+</div>
+<th:block layout:fragment="script">
+	<script>
+		window.onload = function() {
+			buildCalendar();
+		} // 웹 페이지가 로드되면 buildCalendar 실행
 
-        let nowMonth = new Date();  // 현재 달을 페이지를 로드한 날의 달로 초기화
-        let today = new Date();     // 페이지를 로드한 날짜를 저장
-        today.setHours(0,0,0,0);    // 비교 편의를 위해 today의 시간을 초기화
+		let nowMonth = new Date(); // 현재 달을 페이지를 로드한 날의 달로 초기화
+		let today = new Date(); // 페이지를 로드한 날짜를 저장
+		today.setHours(0, 0, 0, 0); // 비교 편의를 위해 today의 시간을 초기화
 
-        // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
-        function buildCalendar() {
+		// 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
+		function buildCalendar() {
 
-            let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1);     // 이번달 1일
-            let lastDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, 0);  // 이번달 마지막날
+			let firstDate = new Date(nowMonth.getFullYear(), nowMonth
+					.getMonth(), 1); // 이번달 1일
+			let lastDate = new Date(nowMonth.getFullYear(),
+					nowMonth.getMonth() + 1, 0); // 이번달 마지막날
 
-            let tbody_Calendar = document.querySelector(".Calendar > tbody");
-            document.getElementById("calYear").innerText = nowMonth.getFullYear();             // 연도 숫자 갱신
-            document.getElementById("calMonth").innerText = leftPad(nowMonth.getMonth() + 1);  // 월 숫자 갱신
+			let tbody_Calendar = document.querySelector(".Calendar > tbody");
+			document.getElementById("calYear").innerText = nowMonth
+					.getFullYear(); // 연도 숫자 갱신
+			document.getElementById("calMonth").innerText = leftPad(nowMonth
+					.getMonth() + 1); // 월 숫자 갱신
 
-            while (tbody_Calendar.rows.length > 0) {                        // 이전 출력결과가 남아있는 경우 초기화
-                tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
-            }
+			while (tbody_Calendar.rows.length > 0) { // 이전 출력결과가 남아있는 경우 초기화
+				tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
+			}
 
-            let nowRow = tbody_Calendar.insertRow();        // 첫번째 행 추가           
+			let nowRow = tbody_Calendar.insertRow(); // 첫번째 행 추가           
 
-            for (let j = 0; j < firstDate.getDay(); j++) {  // 이번달 1일의 요일만큼
-                let nowColumn = nowRow.insertCell();        // 열 추가
-            }
+			for (let j = 0; j < firstDate.getDay(); j++) { // 이번달 1일의 요일만큼
+				let nowColumn = nowRow.insertCell(); // 열 추가
+			}
 
-            for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate() + 1)) {   // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
+			for (let nowDay = firstDate; nowDay <= lastDate; nowDay
+					.setDate(nowDay.getDate() + 1)) { // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
 
-                let nowColumn = nowRow.insertCell();        // 새 열을 추가하고
-                nowColumn.innerText = leftPad(nowDay.getDate());      // 추가한 열에 날짜 입력
+				let nowColumn = nowRow.insertCell(); // 새 열을 추가하고
+				nowColumn.innerText = leftPad(nowDay.getDate()); // 추가한 열에 날짜 입력
 
-            
-                if (nowDay.getDay() == 0) {                 // 일요일인 경우 글자색 빨강으로
-                    nowColumn.style.color = "#DC143C";
-                }
-                if (nowDay.getDay() == 6) {                 // 토요일인 경우 글자색 파랑으로 하고
-                    nowColumn.style.color = "#0000CD";
-                    nowRow = tbody_Calendar.insertRow();    // 새로운 행 추가
-                }
+				if (nowDay.getDay() == 0) { // 일요일인 경우 글자색 빨강으로
+					nowColumn.style.color = "#DC143C";
+				}
+				if (nowDay.getDay() == 6) { // 토요일인 경우 글자색 파랑으로 하고
+					nowColumn.style.color = "#0000CD";
+					nowRow = tbody_Calendar.insertRow(); // 새로운 행 추가
+				}
 
+				if (nowDay < today) { // 지난날인 경우
+					nowColumn.className = "pastDay";
+				} else if (nowDay.getFullYear() == today.getFullYear()
+						&& nowDay.getMonth() == today.getMonth()
+						&& nowDay.getDate() == today.getDate()) { // 오늘인 경우           
+					nowColumn.className = "today";
+					nowColumn.onclick = function() {
+						choiceDate(this);
+					}
+				} else { // 미래인 경우
+					nowColumn.className = "futureDay";
+					nowColumn.onclick = function() {
+						choiceDate(this);
+					}
+				}
+			}
+		}
 
-                if (nowDay < today) {                       // 지난날인 경우
-                    nowColumn.className = "pastDay";
-                }
-                else if (nowDay.getFullYear() == today.getFullYear() && nowDay.getMonth() == today.getMonth() && nowDay.getDate() == today.getDate()) { // 오늘인 경우           
-                    nowColumn.className = "today";
-                    nowColumn.onclick = function () { choiceDate(this); }
-                }
-                else {                                      // 미래인 경우
-                    nowColumn.className = "futureDay";
-                    nowColumn.onclick = function () { choiceDate(this); }
-                }
-            }
-        }
+		// 날짜 선택
+		function choiceDate(nowColumn) {
+			if (document.getElementsByClassName("choiceDay")[0]) { // 기존에 선택한 날짜가 있으면
+				document.getElementsByClassName("choiceDay")[0].classList
+						.remove("choiceDay"); // 해당 날짜의 "choiceDay" class 제거
+			}
+			nowColumn.classList.add("choiceDay"); // 선택된 날짜에 "choiceDay" class 추가
 
-        // 날짜 선택
-        function choiceDate(nowColumn) {
-            if (document.getElementsByClassName("choiceDay")[0]) {                              // 기존에 선택한 날짜가 있으면
-                document.getElementsByClassName("choiceDay")[0].classList.remove("choiceDay");  // 해당 날짜의 "choiceDay" class 제거
-            }
-            nowColumn.classList.add("choiceDay");           // 선택된 날짜에 "choiceDay" class 추가
-            
-            // 선택한 날짜를 출력하기 위한 코드(chat gpt)
-            const selectedDateElement = document.getElementById("selectedDate");
-            selectedDateElement.innerText = nowColumn.innerText;
-            
-            // 선택한 날짜의 연도, 월, 일을 추출
-            const selectedYear = nowMonth.getFullYear();
-            const selectedMonth = nowMonth.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
-            const selectedDay = nowColumn.innerText;
+			// 선택한 날짜를 출력하기 위한 코드(chat gpt)
+			const selectedDateElement = document.getElementById("selectedDate");
+			selectedDateElement.innerText = nowColumn.innerText;
 
-            // 선택한 날짜의 연도, 월, 일을 출력
-            selectedDateElement.innerText = `${selectedYear}년 ${selectedMonth}월 ${selectedDay}일`;
-        }
-        
-        // 이전달 버튼 클릭
-        function prevCalendar() {
-            nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1, nowMonth.getDate());   // 현재 달을 1 감소
-            buildCalendar();    // 달력 다시 생성
-        }
-        // 다음달 버튼 클릭
-        function nextCalendar() {
-            nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate());   // 현재 달을 1 증가
-            buildCalendar();    // 달력 다시 생성
-        }
+			// 선택한 날짜의 연도, 월, 일을 추출
+			const selectedYear = nowMonth.getFullYear();
+			const selectedMonth = nowMonth.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+			const selectedDay = nowColumn.innerText;
 
-        // input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
-        function leftPad(value) {
-            if (value < 10) {
-                value = "0" + value;
-                return value;
-            }
-            return value;
-        }
-    </script>
+			// 선택한 날짜의 연도, 월, 일을 출력
+			selectedDateElement.innerText = `${selectedYear}년 ${selectedMonth}월 ${selectedDay}일`;
+		}
 
-    	</th:block>
+		// 이전달 버튼 클릭
+		function prevCalendar() {
+			nowMonth = new Date(nowMonth.getFullYear(),
+					nowMonth.getMonth() - 1, nowMonth.getDate()); // 현재 달을 1 감소
+			buildCalendar(); // 달력 다시 생성
+		}
+		// 다음달 버튼 클릭
+		function nextCalendar() {
+			nowMonth = new Date(nowMonth.getFullYear(),
+					nowMonth.getMonth() + 1, nowMonth.getDate()); // 현재 달을 1 증가
+			buildCalendar(); // 달력 다시 생성
+		}
+
+		// input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
+		function leftPad(value) {
+			if (value < 10) {
+				value = "0" + value;
+				return value;
+			}
+			return value;
+		}
+	</script>
+
+</th:block>
 </html>
