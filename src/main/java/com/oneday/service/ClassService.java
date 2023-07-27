@@ -95,14 +95,22 @@ public class ClassService {
 		//이미지 가져오기
 		List<ClassImg> classImgList = classImgRepository.findByOnedayClassIdOrderByIdAsc(classId);
 		
+		List<ClassInfo> classInfoList = classInfoRepository.findByOnedayClassIdOrderByIdAsc(classId);
+		
 		//엔티티객체 -> Dto로 변환
 		List<ClassImgDto> classImgDtoList = new ArrayList<>();
+		List<ClassInfoDto> classInfoDtoList = new ArrayList<>();			
 		
 		for(ClassImg classImg : classImgList) {
 			ClassImgDto classImgDto = ClassImgDto.of(classImg);
 			classImgDtoList.add(classImgDto);
 		}
 		
+		for(ClassInfo classInfo : classInfoList) {
+			ClassInfoDto classInfoDto = ClassInfoDto.of(classInfo);
+			classInfoDtoList.add(classInfoDto);
+		}
+
 		//테이블 데이터 가져오기
 		OnedayClass onedayClass = classRepository.findById(classId)
 												.orElseThrow(EntityNotFoundException::new);
@@ -113,6 +121,9 @@ public class ClassService {
 		
 		//이미지 정보를 classFormDto에 넣어준다
 		classFormDto.setClassImgDtoList(classImgDtoList);
+		
+		System.out.println(classInfoDtoList);
+		classFormDto.setClassInfos(classInfoDtoList);
 		
 		return classFormDto;
 	}

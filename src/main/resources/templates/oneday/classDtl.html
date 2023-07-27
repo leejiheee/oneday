@@ -120,8 +120,8 @@ td {
 										class="form_toggle row-vh d-flex flex-row justify-content-between">
 										<div class="form_radio_btn radio_male"
 											th:each="info, status: ${class.classInfos}">
-											<input id="radio-1" type="radio" name="date" th:value="${info.date}">
-											<h3>짱나</h3>
+											<input id="radio-1" type="radio" name="date" th:value="${info.date}" th:text="${info.date}">
+ 											<p th:text="${info.time}"></p> 
 
 										</div>
 
