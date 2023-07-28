@@ -121,11 +121,7 @@ public class ClassController {
 	  public String classDtl(Model model, @PathVariable("classId") Long classId) {
 		  ClassFormDto classFormDto = classService.getClassDtl(classId);
 		  model.addAttribute("class", classFormDto);
-		  
-		  System.out.println(classFormDto.getClassInfos() + "!~!~!~!~!~!~!~!~!~!~!~!");
-		  for(ClassInfoDto test : classFormDto.getClassInfos()) {
-			  System.out.println(test.getDate() +"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		  }
+
 		  return "oneday/classDtl";
 	  }
 	  

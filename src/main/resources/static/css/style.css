@@ -9611,8 +9611,8 @@ body {
     visibility: visible; }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, .logo {
-  font-family: "Work Sans", sans-serif;
-  color: #00204a; }
+	font-family: 'Pretendard-Regular', sans-serif;
+  color: black; }
 
 a {
   -webkit-transition: .3s all ease;

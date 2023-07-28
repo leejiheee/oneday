@@ -60,12 +60,13 @@ public class ClassService {
         for (ClassInfoDto classInfoDto : classFormDto.getClassInfos()) {
             ClassInfo classInfo = new ClassInfo();
             classInfo.setDate(classInfoDto.getDate());
-            classInfo.setTime(classInfoDto.getTime());
+            classInfo.setTime1(classInfoDto.getTime1());
+            classInfo.setTime2(classInfoDto.getTime2());
+            classInfo.setTime3(classInfoDto.getTime3());
             classInfo.setMaxUser(maxUser);
             classInfo.setNowUser(nowUser);
             classInfo.setOnedayClass(onedayClass);
             classInfoRepository.save(classInfo);
-            System.out.println("GGGGGGGGGGG");
         }
         
 

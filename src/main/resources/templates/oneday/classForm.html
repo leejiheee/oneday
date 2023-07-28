@@ -92,26 +92,32 @@
 		</div>
 		
 		
-<div id="dateTimesContainer">
+<div>
     <!-- 초기에는 한 개의 날짜와 시간 입력칸을 미리 생성 -->
     <div class="dateTime" >
         <div class="timesContainer">
-            <label for="time1">시간:</label>
-            <input type="time" id="time" name="time" th:field="*{classInfos[0].time}">
-            <input type="time" id="time" name="time" th:field="*{classInfos[1].time}">
-            <input type="time" id="time" name="time" th:field="*{classInfos[2].time}">
-        <!--     <input type="time" id="time1" name="time"  th:field="*{classInfos[0].time}"> -->
+	        <input type="date" id="date" name="date" th:field="*{classInfos[0].date}">
+	            <input type="time" id="time" name="time" th:field="*{classInfos[0].time1}">
+	            <input type="time" id="time" name="time" th:field="*{classInfos[0].time2}">
+	            <input type="time" id="time" name="time" th:field="*{classInfos[0].time3}">
+	            <br/>
+	        <input type="date" id="date" name="date" th:field="*{classInfos[1].date}">
+	            <input type="time" id="time" name="time" th:field="*{classInfos[1].time1}">
+	            <input type="time" id="time" name="time" th:field="*{classInfos[1].time2}">
+	            <input type="time" id="time" name="time" th:field="*{classInfos[1].time3}">
+	            <br/>
+	        <input type="date" id="date" name="date" th:field="*{classInfos[2].date}">
+            	<input type="time" id="time" name="time" th:field="*{classInfos[2].time1}">
+            	<input type="time" id="time" name="time" th:field="*{classInfos[2].time2}">
+            	<input type="time" id="time" name="time" th:field="*{classInfos[2].time3}">
         </div>
-        <label for="date1">날짜:</label>
-        <input type="date" id="date" name="date" th:field="*{classInfos[0].date}">
-        <input type="date" id="date" name="date" th:field="*{classInfos[1].date}">
-        <input type="date" id="date" name="date" th:field="*{classInfos[2].date}">
-       <!--  <input type="date" id="date1" name="date" th:field="*{classInfos[0].date}"> -->
-        
-        <button type="button" onclick="addDateTime()">날짜 및 시간 추가</button>
+
     </div>
 </div>
-	
+
+<!-- <button type="button" id="addDateTimeBtn">Add Date and Time</button>
+<div id="dateTimeContainer"></div>
+	 -->
 	<label class="form-label">한 클래스 당 모집인원</label>
 	<input type="number" class="form-select region" th:field="*{maxUser}"></input>
 	<input type="number" class="form-select region" th:field="*{nowUser}"></input>
@@ -281,60 +287,64 @@
 		        }
 		    }
 		}
-		let index = 1;
+/* 		
+	    let dateCount = 0;
+	    let timeCount = [];
 
-		function addDateTime() {
-		    if (index <= 7) { // 최대 7개 날짜만 허용
-		        const dateTimesContainer = document.getElementById("dateTimesContainer");
+	    function addDateTimeInput() {
+	        if (dateCount < 5) {
+	            const dateInput = document.createElement('input');
+	            dateInput.type = 'date';
+	            dateInput.name = 'date';
+	            dateInput.id = 'date';
+	            document.getElementById('dateTimeContainer').appendChild(dateInput);
 
-		        const dateTimeContainer = document.createElement("div");
-		        dateTimeContainer.classList.add("dateTime");
+	            const addTimeBtn = document.createElement('button');
+	            addTimeBtn.innerHTML = 'Add Time';
+	            addTimeBtn.id = 'addTimeBtn-' + dateCount; // id에 날짜 인덱스를 추가하여 버튼 생성
+	            addTimeBtn.addEventListener('click', (event) => {
+	                event.preventDefault();
+	                const dateIndex = parseInt(event.target.id.split('-')[1]); // id에서 날짜 인덱스를 추출
+	                addTimeInput(dateIndex);
+	            });
+	            document.getElementById('dateTimeContainer').appendChild(addTimeBtn);
 
-		        const dateInput = document.createElement("input");
-		        dateInput.type = "date";
-		        dateInput.name = "date";
-		        dateInput.setAttribute("th:field", "*{classInfos[" + index + "].date}");
-		        dateInput.required = true;
-		        dateTimeContainer.appendChild(dateInput);
+	            const lineBreak = document.createElement('br');
+	            document.getElementById('dateTimeContainer').appendChild(lineBreak);
 
-		        const timesContainer = document.createElement("div");
-		        timesContainer.classList.add("timesContainer");
+	            // 해당 날짜의 시간 개수를 초기화
+	            timeCount[dateCount] = 0;
 
-		        const timeInput = document.createElement("input");
-		        timeInput.type = "time";
-		        timeInput.name = "time";
-		        dateInput.setAttribute("th:field", "*{classInfos[" + index + "].time}");
-		        timeInput.required = true;
-		        timesContainer.appendChild(timeInput);
+	            dateCount++;
+	        }
 
-/* 		        // 시간 추가 버튼
-		        const addButton = document.createElement("button");
-		        addButton.innerText = "시간 추가";
-		        addButton.type = "button";
-		        addButton.onclick = function() {
-		            addTimeInput(timesContainer, index);
-		        };
-		        timesContainer.appendChild(addButton);
+	        if (dateCount === 5) {
+	            document.getElementById('addDateTimeBtn').disabled = true;
+	        }
+	    }
 
-		        dateTimeContainer.appendChild(timesContainer);
+	    function addTimeInput(dateIndex) {
+	        if (timeCount[dateIndex] < 5) { // 각 날짜별로 최대 5개까지 시간 추가
+	            const timeInput = document.createElement('input');
+	            timeInput.type = 'time';
+	            timeInput.name = 'time';
+	            timeInput.id = 'time';
+	            document.getElementById('dateTimeContainer').appendChild(timeInput);
+	            timeCount[dateIndex]++;
 
-		        dateTimesContainer.appendChild(dateTimeContainer);
+	            if (timeCount[dateIndex] === 5) {
+	                const addTimeBtn = document.getElementById('addTimeBtn-' + dateIndex);
+	                addTimeBtn.style.visibility = 'hidden'; // 버튼을 숨김 처리
+	            }
+	        }
+	    }
 
-		        index++; */
-		    }
-		}
+	    document.getElementById('addDateTimeBtn').addEventListener('click', addDateTimeInput);
 
-/* 		function addTimeInput(container, currentIndex) {
-		    const timeInputs = container.querySelectorAll("input[type='time']");
-		    if (timeInputs.length < 5) { // 최대 5개 시간만 허용
-		        const timeInput = document.createElement("input");
-		        timeInput.type = "time";
-		        timeInput.name = "time";
-		        timeInput.setAttribute("th:field", "*{classInfos[" + currentIndex + "].time}");
-		        timeInput.required = true;
-		        container.appendChild(timeInput);
-		    }
-		} */
+	    // 처음 날짜에서 시간 추가 가능하도록 추가
+	    addDateTimeInput();
+	     */
 		</script>
+
 	</th:block>
 </html>

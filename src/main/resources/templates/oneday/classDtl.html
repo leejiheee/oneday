@@ -9,8 +9,16 @@
 
 <th:block layout:fragment="css">
 	<style type="text/css">
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400; 
+    font-style: normal;
+}	
+
 * {
 	font-family: 'Pretendard-Regular', sans-serif;
+	
 }
 
 td {
@@ -88,6 +96,81 @@ td {
 	background: #F9FAFC;
 	color: #666;
 }
+
+/* 날짜선택 */
+a[class*="btn"] {text-decoration: none;}
+input[class*="btn"], 
+button[class*="btn"] {border: 0;}
+
+.rounded {
+  border-radius: 10px;
+}
+
+.btn.yellow, .btn-two.yellow {
+	background-color: #f0d264;
+	width: 220px;
+}
+/* 이미지 슬라이더 */
+li{list-style:none;}
+.flex{
+  display:flex;
+}
+
+.flex-jc-c{
+  justify-content:center;
+}
+.con{
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.article-board-box{
+  position:relative;
+}
+.slide_wrapper{
+  position:relative;
+  width:700px;
+  margin:0 auto;
+  height:200px;
+  overflow:hidden
+}
+
+.slides{
+  position:absolute;
+  left:0;
+  top:0;
+  transition:left 0.5s ease-out;
+}
+
+.slides li:not(:last-child){
+  justify-content:flex-start;
+  margin-right:30px;
+}
+
+
+.controls{
+  text-align:center;
+}
+
+.controls span{
+  z-index:2;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.controls>.prev{
+  right:calc(100% - 40px);
+}
+
+.controls>.next{
+  left:calc(100% - 40px);
+}
+
+.ha{
+  width:50px;
+}
+
 </style>
 </th:block>
 <div class="section" layout:fragment="content">
@@ -103,57 +186,51 @@ td {
 								style="width: 700px; height: 500px; border-radius: 20px;" />
 						</div>
 						<div>
-							<div style="margin-top: 30px; padding-left: 20px;">
+							<div style="margin:30px 0; padding-left: 20px;">
 								<h3 th:text="${class.classNm}"
 									style="font-weight: 400; font-size: 26px;"></h3>
 							</div>
-							<div></div>
+							<div class="slide_wrapper ">
+							  <ul class="slides flex" style="padding-left: 15px;">
+							  	<li th:each="img : ${class.classImgDtoList}" >
+									<img th:src="${img.imgUrl}" width="200px;">
+									<img th:if="${img.imgUrl == ''}" src="/images/이미지공백.jpg" width="200px;" height="200px;">
+								</li>
+							  </ul>
+							  <p class="controls">
+							    <span class="prev"><i class="fas fa-chevron-left"></i></span>
+							    <span class="next"><i class="fas fa-chevron-right"></i></span>
+							  </p>
+							</div>
+							<div class="ha"></div>
+
+						</div>
+						
+						<div class="agent-box" style="padding: 50px;">
+							<pre><p th:text="${class.classDetail}" style="font-size: 15px; text-align: center;"></p></pre>
 						</div>
 					</div>
-					<div class="col-lg-4">
+					<div class="col-lg-4 ">
 						<div>
 
 							<div>
 								<div class="mb-3">
-									<label for="userSex" class="form-label">날짜</label>
 									<div
-										class="form_toggle row-vh d-flex flex-row justify-content-between">
-										<div class="form_radio_btn radio_male"
-											th:each="info, status: ${class.classInfos}">
-											<input id="radio-1" type="radio" name="date" th:value="${info.date}" th:text="${info.date}">
- 											<p th:text="${info.time}"></p> 
+										class="form_toggle" style="text-align: center;">
+										<div th:each="info, status: ${class.classInfos}">
+											<button class="btn yellow rounded" th:value="${info.date}" th:if="${info.date != ''}" th:text="${info.date}"></button>
+												<div>
+		 										 	<button th:if="${info.time1 != ''}" th:text="${info.time1}"></button> 
+		 										 	<button th:if="${info.time2 != ''}" th:text="${info.time2}"></button> 
+		 										 	<button th:if="${info.time3 != ''}" th:text="${info.time3}"></button> 
+												</div>
 
 										</div>
 
 									</div>
 								</div>
 							</div>
-							<!--      <table class="Calendar">
-        <thead>
-            <tr>
-                <td onClick="prevCalendar();" style="cursor:pointer;">&#60;</td>
-                <td colspan="5">
-                    <span id="calYear"></span>년
-                    <span id="calMonth"></span>월
-                </td>
-                <td onClick="nextCalendar();" style="cursor:pointer;">&#62;</td>
-            </tr>
-            <tr>
-                <td>일</td>
-                <td>월</td>
-                <td>화</td>
-                <td>수</td>
-                <td>목</td>
-                <td>금</td>
-                <td>토</td>
-            </tr>
-        </thead>
 
-        <tbody>
-        </tbody>
-    </table>
-    선택한 날짜를 출력할 HTML 요소
-<div id="selectedDate"></div> -->
 						</div>
 
 						<div class="d-block agent-box p-5">
@@ -174,112 +251,38 @@ td {
 </div>
 <th:block layout:fragment="script">
 	<script>
-		window.onload = function() {
-			buildCalendar();
-		} // 웹 페이지가 로드되면 buildCalendar 실행
+	var slides = document.querySelector('.slides'),
+	  slide = document.querySelectorAll('.slides li'),
+	  currentIdx = 0,
+	  slideCount = slide.length,
+	  slideWidth = 300,
+	  slideMargin = 30,
+	  prevBtn = document.querySelector('.prev'),
+	  nextBtn = document.querySelector('.next');
 
-		let nowMonth = new Date(); // 현재 달을 페이지를 로드한 날의 달로 초기화
-		let today = new Date(); // 페이지를 로드한 날짜를 저장
-		today.setHours(0, 0, 0, 0); // 비교 편의를 위해 today의 시간을 초기화
+	slides.style.width =
+	  (slideWidth + slideMargin) * slideCount - slideMargin + 'px';
 
-		// 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
-		function buildCalendar() {
+	function moveSlide(num) {
+	  slides.style.left = -num * 330 + 'px';
+	  currentIdx = num;
+	}
 
-			let firstDate = new Date(nowMonth.getFullYear(), nowMonth
-					.getMonth(), 1); // 이번달 1일
-			let lastDate = new Date(nowMonth.getFullYear(),
-					nowMonth.getMonth() + 1, 0); // 이번달 마지막날
+	nextBtn.addEventListener('click', function () {
+	  if( currentIdx < slideCount - 3){
+	    moveSlide(currentIdx + 1);
+	  }else{
+	    moveSlide(0);
+	  }   
+	});
 
-			let tbody_Calendar = document.querySelector(".Calendar > tbody");
-			document.getElementById("calYear").innerText = nowMonth
-					.getFullYear(); // 연도 숫자 갱신
-			document.getElementById("calMonth").innerText = leftPad(nowMonth
-					.getMonth() + 1); // 월 숫자 갱신
-
-			while (tbody_Calendar.rows.length > 0) { // 이전 출력결과가 남아있는 경우 초기화
-				tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
-			}
-
-			let nowRow = tbody_Calendar.insertRow(); // 첫번째 행 추가           
-
-			for (let j = 0; j < firstDate.getDay(); j++) { // 이번달 1일의 요일만큼
-				let nowColumn = nowRow.insertCell(); // 열 추가
-			}
-
-			for (let nowDay = firstDate; nowDay <= lastDate; nowDay
-					.setDate(nowDay.getDate() + 1)) { // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
-
-				let nowColumn = nowRow.insertCell(); // 새 열을 추가하고
-				nowColumn.innerText = leftPad(nowDay.getDate()); // 추가한 열에 날짜 입력
-
-				if (nowDay.getDay() == 0) { // 일요일인 경우 글자색 빨강으로
-					nowColumn.style.color = "#DC143C";
-				}
-				if (nowDay.getDay() == 6) { // 토요일인 경우 글자색 파랑으로 하고
-					nowColumn.style.color = "#0000CD";
-					nowRow = tbody_Calendar.insertRow(); // 새로운 행 추가
-				}
-
-				if (nowDay < today) { // 지난날인 경우
-					nowColumn.className = "pastDay";
-				} else if (nowDay.getFullYear() == today.getFullYear()
-						&& nowDay.getMonth() == today.getMonth()
-						&& nowDay.getDate() == today.getDate()) { // 오늘인 경우           
-					nowColumn.className = "today";
-					nowColumn.onclick = function() {
-						choiceDate(this);
-					}
-				} else { // 미래인 경우
-					nowColumn.className = "futureDay";
-					nowColumn.onclick = function() {
-						choiceDate(this);
-					}
-				}
-			}
-		}
-
-		// 날짜 선택
-		function choiceDate(nowColumn) {
-			if (document.getElementsByClassName("choiceDay")[0]) { // 기존에 선택한 날짜가 있으면
-				document.getElementsByClassName("choiceDay")[0].classList
-						.remove("choiceDay"); // 해당 날짜의 "choiceDay" class 제거
-			}
-			nowColumn.classList.add("choiceDay"); // 선택된 날짜에 "choiceDay" class 추가
-
-			// 선택한 날짜를 출력하기 위한 코드(chat gpt)
-			const selectedDateElement = document.getElementById("selectedDate");
-			selectedDateElement.innerText = nowColumn.innerText;
-
-			// 선택한 날짜의 연도, 월, 일을 추출
-			const selectedYear = nowMonth.getFullYear();
-			const selectedMonth = nowMonth.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
-			const selectedDay = nowColumn.innerText;
-
-			// 선택한 날짜의 연도, 월, 일을 출력
-			selectedDateElement.innerText = `${selectedYear}년 ${selectedMonth}월 ${selectedDay}일`;
-		}
-
-		// 이전달 버튼 클릭
-		function prevCalendar() {
-			nowMonth = new Date(nowMonth.getFullYear(),
-					nowMonth.getMonth() - 1, nowMonth.getDate()); // 현재 달을 1 감소
-			buildCalendar(); // 달력 다시 생성
-		}
-		// 다음달 버튼 클릭
-		function nextCalendar() {
-			nowMonth = new Date(nowMonth.getFullYear(),
-					nowMonth.getMonth() + 1, nowMonth.getDate()); // 현재 달을 1 증가
-			buildCalendar(); // 달력 다시 생성
-		}
-
-		// input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
-		function leftPad(value) {
-			if (value < 10) {
-				value = "0" + value;
-				return value;
-			}
-			return value;
-		}
+	prevBtn.addEventListener('click', function () {
+	  if( currentIdx > 0){
+	    moveSlide(currentIdx - 1);
+	  }else{
+	    moveSlide(slideCount - 3);
+	  }   
+	});
 	</script>
 
 </th:block>

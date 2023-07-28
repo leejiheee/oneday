@@ -12,7 +12,9 @@ import lombok.Setter;
 public class ClassInfoDto {
 	private String date;
 	
-	private String time;
+	private String time1;
+	private String time2;
+	private String time3;
 	
 	private int maxUser;
 	

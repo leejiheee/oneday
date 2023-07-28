@@ -32,8 +32,11 @@ public class ClassInfo {
 	private String date;
 	
 	@Column(nullable = false, length = 100)
-	private String time;
+	private String time1;
 
+	private String time2;
+	
+	private String time3;
 	@Column(nullable = false)
 	private int maxUser;
 	
