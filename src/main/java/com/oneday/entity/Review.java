@@ -11,7 +11,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
-public class Review{
+public class Review extends BaseEntity{
 	@Id
 	@Column(name="review_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)

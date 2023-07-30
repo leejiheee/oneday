@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org" 
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout1}">
+	layout:decorate="~{layouts/layout1}" >
 <head>
 <meta name="_csrf" th:content="${_csrf.token}" />
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
@@ -171,9 +171,6 @@ li{list-style:none;}
   width:50px;
 }
 
-#time1, #time2, #time3 {
-	visibility: hidden;
-}
 
 </style>
 </th:block>
@@ -221,15 +218,14 @@ li{list-style:none;}
 								<div class="mb-3">
 									<div
 										class="form_toggle" style="text-align: center;">
-										<div th:each="info, status: ${class.classInfos}">
-											<button id="date-btn" th:onclick="show()" class="btn yellow rounded" th:value="${info.date}" th:if="${info.date != ''}" th:text="${info.date}"></button>
-												<div>
-		 										 	<button id="time1" th:if="${info.time1 != ''}" th:text="${info.time1}"></button> 
-		 										 	<button id="time2" th:if="${info.time2 != ''}" th:text="${info.time2}"></button> 
-		 										 	<button id="time3" th:if="${info.time3 != ''}" th:text="${info.time3}"></button> 
-												</div>
-
-										</div>
+											<div th:each="info, index: ${class.classInfos}">
+											    <button th:attr="id='date_' + ${index.index}" class="btn yellow rounded" th:value="${info.date}" th:if="${info.date != ''}" th:text="${info.date}"></button>
+											    <div th:attr="id='time_' + ${index.index}">
+											        <button id="time1" th:if="${info.time1 != ''}" th:text="${info.time1}"></button> 
+											        <button id="time2" th:if="${info.time2 != ''}" th:text="${info.time2}"></button> 
+											        <button id="time3" th:if="${info.time3 != ''}" th:text="${info.time3}"></button> 
+											    </div>
+											</div>
 
 									</div>
 								</div>
@@ -238,15 +234,29 @@ li{list-style:none;}
 						</div>
 
 						<div class="d-block agent-box p-5">
-							<div class="img mb-4"></div>
-							<div class="text">
-								<h3 class="mb-0">Alicia Huston</h3>
-								<div class="meta mb-3">Real Estate</div>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-									Ratione laborum quo quos omnis sed magnam id ducimus saepe</p>
-
+							<div>
+							<div class="input-group mb-3" style="max-width: 120px;">
+							<div class="input-group-prepend">
+								<button class="btn btn-outline-primary js-btn-minus count_btn"
+									type="button">&minus;</button>
+							</div>
+							<input type="text" class="form-control text-center" value="1"
+								placeholder="" aria-label="Example text with button addon"
+								aria-describedby="button-addon1" name="count" id="count">
+							<div class="input-group-append">
+								<button class="btn btn-outline-primary js-btn-plus count_btn"
+									type="button">&plus;</button>
 							</div>
 						</div>
+							<div>
+							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">총
+								상품 금액</h5>
+							<strong id="totalPrice" class="text-primary h4"></strong>
+						</div>
+							</div>
+						</div>
+						<button type="button" class="btn btn-primary btn-lg" onclick="regist()">신청하기</button>
+						
 					</div>
 				</div>
 			</div>
@@ -254,6 +264,71 @@ li{list-style:none;}
 	</div>
 </div>
 <th:block layout:fragment="script">
+	<script th:inline="javascript">
+		$(document).ready(function() {
+			//처음 상세페이지 화면에 들어올때 총 상품금액이 보여야 하므로
+			calculateTotalPrice(); 
+			
+			//수량 -, + 버튼을 누를때마다 총 가격을 구한다.
+			$(".count_btn").click(function() {
+				calculateTotalPrice();
+			})
+		});
+		
+		function calculateTotalPrice() {
+			var count = $("#count").val(); //수량
+			var price = $("#price").val(); //가격
+			var totalPrice = (price * count).toLocaleString('ko-KR'); //천단위 콤마
+			$("#totalPrice").html(totalPrice + '원'); //총가격 출력
+		}
+		
+		function regist() {
+			var token = $("meta[name='_csrf']").attr("content"); // meta태그에서 값이 _csrf인 값을 가져오겠다~
+			var header = $("meta[name='_csrf_header']").attr("content");
+
+			var url = "/regist";
+
+			// Controller(서버)에 전달할 데이터
+			var paramData = {
+				classId : $("#classId").val(), // class_id
+				count : $("#count").val() // 수량
+				
+			}
+
+			// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.
+
+			var param = JSON.stringify(paramData);
+			
+			$.ajax({
+				url : url, // request URL 서버에 요청할 url 쓰면 됨 위에서 url이란 변수에 담아놨기 때문에 url 써줌 
+				type : "POST", // 전송방식
+				contentType : "application/json",
+				data : param, // 서버에 전송할 데이터 var param = JSON.stringify(paramData); item_id, 수량 들어있음
+				beforeSend : function(xhr) {
+					// 데이터를 전송하기 전에 헤더에 csrf 값을 설정해줌
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					alert("신청이 완료 되었습니다." + result);
+					location.href = '/';
+				},
+				error : function(jqXHR, status, error) {
+					if (jqXHR.status == '401') {
+						alert('로그인 후 이용해 주세요.')
+						location.href = '/members/login';
+					} else {
+						// 에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
+						alert(jqXHR.responseText); 
+					}
+					
+				}
+			});
+			
+		}
+		
+	</script>
 	<script>
 	var slides = document.querySelector('.slides'),
 	  slide = document.querySelectorAll('.slides li'),
@@ -287,13 +362,7 @@ li{list-style:none;}
 	    moveSlide(slideCount - 3);
 	  }   
 	});
-	
-	function show() {
-		document.getElementById("time1").style.visibility = "visible";
-		document.getElementById("time2").style.visibility = "visible";
-		document.getElementById("time3").style.visibility = "visible";
-	}
-	</script>
 
+	</script>
 </th:block>
 </html>

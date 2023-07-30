@@ -48,8 +48,6 @@ public class OnedayClass{
 	@OnDelete(action= OnDeleteAction.CASCADE)
 	private Category category;
 	
-
-	
 	@Enumerated(EnumType.STRING)
 	private ClassEnd classEnd; //마감 상태
 	
@@ -71,6 +69,8 @@ public class OnedayClass{
 		
 		return onedayClass;
 	}
+	
+
 	
 	
 

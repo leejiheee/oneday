@@ -21,7 +21,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class ClassInfo {
+public class ClassInfo{
 	
 	@Id
 	@Column(name = "info_id")
@@ -47,14 +47,16 @@ public class ClassInfo {
 	@JoinColumn(name = "class_id")
 	private OnedayClass onedayClass;
 	
-	/*
-	public void updateInfo(ClassFormDto classFormDto) {
-		this.date = classFormDto.getDate();
-		this.time = classFormDto.getTime();
-		this.maxUser = classFormDto.getMaxUser();
-		this.nowUser = classFormDto.getNowUser();
+	//인원수 감소시키는 메소드
+	public void removeUser(int maxUser) {
+		int nowUser = this.nowUser + 1;
+		
+		/*
+		 * if(nowUser < maxUser) { throw new OutOfUserException("모집인원이 마감되었습니다."); }
+		 	메세지 띄워야됨
+		 */
+		
+		this.nowUser = nowUser;
 	}
-	*/
-	
 	
 }
