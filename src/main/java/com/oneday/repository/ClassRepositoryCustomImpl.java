@@ -23,8 +23,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.shopmax.constant.ItemSellStatus;
-import com.shopmax.entity.QItem;
+
 
 import jakarta.persistence.EntityManager;
 
@@ -48,7 +47,7 @@ public class ClassRepositoryCustomImpl implements ClassRepositoryCustom{
 			dateTime = dateTime.minusMonths(6); // 현재 날짜로부터 6달 전
 
 	
-		return QItem.item.regTime.after(dateTime);
+		return null;/*QItem.item.regTime.after(dateTime);*/
 	}
 	
 	//상태를 전체로 했을 때 null이 들어있으므로 처리를 한번 해준다.
@@ -61,12 +60,12 @@ public class ClassRepositoryCustomImpl implements ClassRepositoryCustom{
 	}
 	
 	private BooleanExpression searchByLike(String searchBy, String searchQuery) {
-		if(StringUtils.equals("itemNm", searchBy)) {
-			//등록자로 검색시
-			return QItem.item.itemNm.like("%" + searchQuery + "%");
-		} else if(StringUtils.equals("createBy", searchBy)) {
-			return QItem.item.createBy.like("%" + searchQuery + "%");
-		}
+		/*
+		 * if(StringUtils.equals("itemNm", searchBy)) { //등록자로 검색시 return
+		 * QItem.item.itemNm.like("%" + searchQuery + "%"); } else
+		 * if(StringUtils.equals("createBy", searchBy)) { return
+		 * QItem.item.createBy.like("%" + searchQuery + "%"); }
+		 */
 		return null;
 	}
 	

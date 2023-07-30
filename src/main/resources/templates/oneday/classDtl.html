@@ -171,6 +171,10 @@ li{list-style:none;}
   width:50px;
 }
 
+#time1, #time2, #time3 {
+	visibility: hidden;
+}
+
 </style>
 </th:block>
 <div class="section" layout:fragment="content">
@@ -218,11 +222,11 @@ li{list-style:none;}
 									<div
 										class="form_toggle" style="text-align: center;">
 										<div th:each="info, status: ${class.classInfos}">
-											<button class="btn yellow rounded" th:value="${info.date}" th:if="${info.date != ''}" th:text="${info.date}"></button>
+											<button id="date-btn" th:onclick="show()" class="btn yellow rounded" th:value="${info.date}" th:if="${info.date != ''}" th:text="${info.date}"></button>
 												<div>
-		 										 	<button th:if="${info.time1 != ''}" th:text="${info.time1}"></button> 
-		 										 	<button th:if="${info.time2 != ''}" th:text="${info.time2}"></button> 
-		 										 	<button th:if="${info.time3 != ''}" th:text="${info.time3}"></button> 
+		 										 	<button id="time1" th:if="${info.time1 != ''}" th:text="${info.time1}"></button> 
+		 										 	<button id="time2" th:if="${info.time2 != ''}" th:text="${info.time2}"></button> 
+		 										 	<button id="time3" th:if="${info.time3 != ''}" th:text="${info.time3}"></button> 
 												</div>
 
 										</div>
@@ -283,6 +287,12 @@ li{list-style:none;}
 	    moveSlide(slideCount - 3);
 	  }   
 	});
+	
+	function show() {
+		document.getElementById("time1").style.visibility = "visible";
+		document.getElementById("time2").style.visibility = "visible";
+		document.getElementById("time3").style.visibility = "visible";
+	}
 	</script>
 
 </th:block>
