@@ -37,12 +37,17 @@ public class RegistClass extends BaseEntity{
 	
 	private int count; //신청인원
 	
+	private String date;
+	
+	private Time time;
+	
 	
 	public static RegistClass createClassRegist(OnedayClass onedayClass, ClassInfo classInfo, int count) {
 		RegistClass classRegist = new RegistClass();
 		classRegist.setOnedayClass(onedayClass);
 		classRegist.setCount(count);
 		classRegist.setRegistPrice(onedayClass.getPrice());
+		classRegist.setDate(classInfo.getDate());
 		
 		classInfo.removeUser(count); //현재 신청인원을 증가시킴
 		

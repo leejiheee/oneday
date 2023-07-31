@@ -3,6 +3,7 @@ package com.oneday.dto;
 import org.modelmapper.ModelMapper;
 
 import com.oneday.entity.ClassInfo;
+import com.oneday.entity.Time;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +13,8 @@ import lombok.Setter;
 public class ClassInfoDto {
 	private String date;
 	
-	private String time1;
-	private String time2;
-	private String time3;
-	
+	private Time time;
+
 	private int maxUser;
 	
 	private int nowUser;

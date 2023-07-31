@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+
+
+<th:block layout:fragment="css">
+	<style>
+	</style>
+</th:block>
+	<div layout:fragment="content" style="width: 1200px; height: 2000px; margin: 0 auto;">
+		<form method="get" th:each="regist, status : ${regists.getContent()}">
+			<table class="table">
+		  <thead>
+		    <tr>
+		      <th scope="col"></th>
+		      <th scope="col">클래스</th>
+		      <th scope="col">인원</th>
+		      <th scope="col">날짜/시간</th>
+		      <th scope="col">가격</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr th:each="registClass : ${regist.classRegistDtoList}">
+		      <th scope="row"><a href="" ></a></th>
+		      <td th:text="${registClass.classNm}"></td>
+		      <td th:text="${registClass.count}"></td>
+		      <td th:text="${registClass.date} + ${registClass.time}"></td>
+		      <td>[[${#numbers.formatInteger(registClass.registPrice, 0, 'COMMA') + '원'}]]</td>
+		      <td>
+
+			<td>
+		    </tr>
+		  </tbody>
+		</table>
+		</form>
+		</div>
+</html>

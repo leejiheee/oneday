@@ -97,19 +97,19 @@
     <div class="dateTime" >
         <div class="timesContainer">
 	        <input type="date" id="date" name="date" th:field="*{classInfos[0].date}">
-	            <input type="time" id="time" name="time" th:field="*{classInfos[0].time1}">
-	            <input type="time" id="time" name="time" th:field="*{classInfos[0].time2}">
-	            <input type="time" id="time" name="time" th:field="*{classInfos[0].time3}">
+	            <input type="time" id="time1" name="time" th:field="*{classInfos[0].time}">
+	            <input type="time" id="time2" name="time" th:field="*{classInfos[0].time}">
+	            <input type="time" id="time3" name="time" th:field="*{classInfos[0].time}">
 	            <br/>
 	        <input type="date" id="date" name="date" th:field="*{classInfos[1].date}">
-	            <input type="time" id="time" name="time" th:field="*{classInfos[1].time1}">
-	            <input type="time" id="time" name="time" th:field="*{classInfos[1].time2}">
-	            <input type="time" id="time" name="time" th:field="*{classInfos[1].time3}">
+	            <input type="time" id="time1" name="time" th:field="*{classInfos[1].time}">
+	            <input type="time" id="time2" name="time" th:field="*{classInfos[1].time}">
+	            <input type="time" id="time3" name="time" th:field="*{classInfos[1].time}">
 	            <br/>
 	        <input type="date" id="date" name="date" th:field="*{classInfos[2].date}">
-            	<input type="time" id="time" name="time" th:field="*{classInfos[2].time1}">
-            	<input type="time" id="time" name="time" th:field="*{classInfos[2].time2}">
-            	<input type="time" id="time" name="time" th:field="*{classInfos[2].time3}">
+            	<input type="time" id="time1" name="time" th:field="*{classInfos[2].time}">
+            	<input type="time" id="time2" name="time" th:field="*{classInfos[2].time}">
+            	<input type="time" id="time3" name="time" th:field="*{classInfos[2].time}">
         </div>
 
     </div>
@@ -120,8 +120,10 @@
 	 -->
 	<label class="form-label">한 클래스 당 모집인원</label>
 	<input type="number" class="form-select region" th:field="*{maxUser}"></input>
-	<input type="number" class="form-select region" th:field="*{nowUser}"></input>
-  			
+	
+	<label class="form-label">현재 인원</label>
+ 	<input type="number" class="form-select region" th:field="*{nowUser}" th:value="0"></input>
+			
 
 			<button type="button" class="btn btn-warning" onclick="beforeSubmit()">등록하기</button>
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">

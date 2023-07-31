@@ -219,11 +219,12 @@ li{list-style:none;}
 									<div
 										class="form_toggle" style="text-align: center;">
 											<div th:each="info, index: ${class.classInfos}">
-											    <button th:attr="id='date_' + ${index.index}" class="btn yellow rounded" th:value="${info.date}" th:if="${info.date != ''}" th:text="${info.date}"></button>
+											    <button th:attr="id='date_' + ${index.index}" class="btn yellow rounded" th:value="${info.date}" th:if="${info.date != ''}" th:text="${info.date}" onclick="handleButtonClick()"></button>
 											    <div th:attr="id='time_' + ${index.index}">
-											        <button id="time1" th:if="${info.time1 != ''}" th:text="${info.time1}"></button> 
-											        <button id="time2" th:if="${info.time2 != ''}" th:text="${info.time2}"></button> 
-											        <button id="time3" th:if="${info.time3 != ''}" th:text="${info.time3}"></button> 
+											    	<div class="form-check form-check-inline"  th:each="time, index : ${info.time}">
+														  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio" th:value="${time}" th:if="${time != ''}">
+														  <label id="time"  th:text="${time}" class="form-check-label" for="inlineRadio1"></label>
+														</div>
 											    </div>
 											</div>
 
@@ -234,8 +235,10 @@ li{list-style:none;}
 						</div>
 
 						<div class="d-block agent-box p-5">
+							<input type="text" id="hiddenDate" name="date" value="" style="border: none;">
 							<div>
 							<div class="input-group mb-3" style="max-width: 120px;">
+							<p>신청 인원</p>
 							<div class="input-group-prepend">
 								<button class="btn btn-outline-primary js-btn-minus count_btn"
 									type="button">&minus;</button>
@@ -249,9 +252,8 @@ li{list-style:none;}
 							</div>
 						</div>
 							<div>
-							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">총
-								상품 금액</h5>
-							<strong id="totalPrice" class="text-primary h4"></strong>
+							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">가격</h5>
+							<strong class="text-primary h4" th:text="${class.price}"></strong>
 						</div>
 							</div>
 						</div>
@@ -264,8 +266,9 @@ li{list-style:none;}
 	</div>
 </div>
 <th:block layout:fragment="script">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script th:inline="javascript">
-		$(document).ready(function() {
+/* 		$(document).ready(function() {
 			//처음 상세페이지 화면에 들어올때 총 상품금액이 보여야 하므로
 			calculateTotalPrice(); 
 			
@@ -274,7 +277,12 @@ li{list-style:none;}
 				calculateTotalPrice();
 			})
 		});
-		
+		 */
+		 function handleButtonClick() {
+			  var selectedValue = document.querySelector('button[id^="date_"]:focus').value;
+			  document.getElementById('hiddenDate').value = selectedValue;
+			}
+		 
 		function calculateTotalPrice() {
 			var count = $("#count").val(); //수량
 			var price = $("#price").val(); //가격
@@ -287,12 +295,14 @@ li{list-style:none;}
 			var header = $("meta[name='_csrf_header']").attr("content");
 
 			var url = "/regist";
-
+			
+			
 			// Controller(서버)에 전달할 데이터
 			var paramData = {
 				classId : $("#classId").val(), // class_id
-				count : $("#count").val() // 수량
-				
+				count : $("#count").val(), // 수량
+				time : $("#inlineRadio").val(),
+				date : $("#date").val()
 			}
 
 			// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.
