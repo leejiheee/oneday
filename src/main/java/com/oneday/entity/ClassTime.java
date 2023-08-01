@@ -14,21 +14,20 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "time")
+@Table(name = "class_time")
 @Setter
 @Getter
 @ToString
-public class Time {
-	
+public class ClassTime {
 	@Id
-	@Column(name = "time_id")
+	@Column(name = "class_time_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column(nullable = false, length = 100)
-	private String date;
+	private String time;
 	
-	@JoinColumn(name = "info_id")
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "info_id")
 	private ClassInfo classInfo;
 }

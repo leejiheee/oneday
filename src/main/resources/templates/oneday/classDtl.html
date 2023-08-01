@@ -3,6 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}" >
 <head>
+
 <meta name="_csrf" th:content="${_csrf.token}" />
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
@@ -167,9 +168,36 @@ li{list-style:none;}
   left:calc(100% - 40px);
 }
 
-.ha{
-  width:50px;
+.radio-css {
+    padding: 15px 10px;
 }
+.radio-css input[type=radio]{
+    display: none;
+}
+.radio-css input[type=radio]+label{
+    display: inline-block;
+    cursor: pointer;
+    height: 24px;
+    width: 90px;
+    border: 1px solid #333;
+    line-height: 24px;
+    text-align: center;
+    font-weight:bold;
+    font-size:13px;
+}
+.radio-css input[type=radio]+label{
+    background-color: #fff;
+    color: #333;
+}
+.radio-css input[type=radio]:checked+label{
+    background-color: #333;
+    color: #fff;
+}
+
+  .block {
+    margin: 20px;
+
+  }
 
 
 </style>
@@ -218,12 +246,12 @@ li{list-style:none;}
 								<div class="mb-3">
 									<div
 										class="form_toggle" style="text-align: center;">
-											<div th:each="info, index: ${class.classInfos}">
-											    <button th:attr="id='date_' + ${index.index}" class="btn yellow rounded" th:value="${info.date}" th:if="${info.date != ''}" th:text="${info.date}" onclick="handleButtonClick()"></button>
-											    <div th:attr="id='time_' + ${index.index}">
-											    	<div class="form-check form-check-inline"  th:each="time, index : ${info.time}">
-														  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio" th:value="${time}" th:if="${time != ''}">
-														  <label id="time"  th:text="${time}" class="form-check-label" for="inlineRadio1"></label>
+											<div th:each="info, status: ${class.classInfos}">
+											    <button th:attr="id='date_' + ${status.index}" class="btn yellow rounded" th:value="${info.date}" th:if="${info.date != ''}" th:text="${info.date}" onclick="handleButtonClick()"></button>
+											    <div th:attr="id='time_' + ${status.index}">
+											    	<div class="form-check form-check-inline radio-css"  th:each="time, index : ${info.classTimes}">
+														  <input class="form-check-input" type="radio" name="inlineRadioOptions" th:attr="id='inlineRadio_' + ${index.index} + ${status.index}" th:value="${time.time}" th:if="${time.time != ''}">
+														  <label id="time"  th:text="${time.time}" class="form-check-label" th:attr="for='inlineRadio_' + ${index.index} + ${status.index}"></label>
 														</div>
 											    </div>
 											</div>
@@ -238,22 +266,20 @@ li{list-style:none;}
 							<input type="text" id="hiddenDate" name="date" value="" style="border: none;">
 							<div>
 							<div class="input-group mb-3" style="max-width: 120px;">
-							<p>신청 인원</p>
-							<div class="input-group-prepend">
-								<button class="btn btn-outline-primary js-btn-minus count_btn"
-									type="button">&minus;</button>
-							</div>
-							<input type="text" class="form-control text-center" value="1"
-								placeholder="" aria-label="Example text with button addon"
-								aria-describedby="button-addon1" name="count" id="count">
-							<div class="input-group-append">
-								<button class="btn btn-outline-primary js-btn-plus count_btn"
-									type="button">&plus;</button>
-							</div>
+								<div class="block">
+								  <div class="vtmn-quantity vtmn-quantity_size--small">
+								    <label for="my-quantity-1" style="font-size: 20px;">신청인원</label>
+								    <div class="vtmn-quantity_content" style="display:flex;">
+								      <input type="number" id="my-quantity-1"  style="width: 70px; height: 40px; font-size: 25px;"/>
+										<p style="font-size: 25px;">명</p>
+								    </div>
+								  </div>
+								</div>
 						</div>
 							<div>
 							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">가격</h5>
-							<strong class="text-primary h4" th:text="${class.price}"></strong>
+							<strong id="price" class="text-primary h4" th:text="${class.price}"></strong>
+							<p id="totalPrice"></p>
 						</div>
 							</div>
 						</div>
@@ -268,7 +294,7 @@ li{list-style:none;}
 <th:block layout:fragment="script">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script th:inline="javascript">
-/* 		$(document).ready(function() {
+ 		$(document).ready(function() {
 			//처음 상세페이지 화면에 들어올때 총 상품금액이 보여야 하므로
 			calculateTotalPrice(); 
 			
@@ -277,7 +303,7 @@ li{list-style:none;}
 				calculateTotalPrice();
 			})
 		});
-		 */
+
 		 function handleButtonClick() {
 			  var selectedValue = document.querySelector('button[id^="date_"]:focus').value;
 			  document.getElementById('hiddenDate').value = selectedValue;
@@ -372,6 +398,8 @@ li{list-style:none;}
 	    moveSlide(slideCount - 3);
 	  }   
 	});
+	
+
 
 	</script>
 </th:block>

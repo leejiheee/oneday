@@ -17,16 +17,19 @@ import com.oneday.dto.ClassFormDto;
 import com.oneday.dto.ClassImgDto;
 import com.oneday.dto.ClassInfoDto;
 import com.oneday.dto.ClassSearchDto;
+import com.oneday.dto.ClassTimeDto;
 import com.oneday.dto.MainClassDto;
 import com.oneday.entity.Category;
 import com.oneday.entity.ClassImg;
 import com.oneday.entity.ClassInfo;
+import com.oneday.entity.ClassTime;
 import com.oneday.entity.Member;
 import com.oneday.entity.OnedayClass;
 import com.oneday.repository.CategoryRepository;
 import com.oneday.repository.ClassImgRepository;
 import com.oneday.repository.ClassInfoRepository;
 import com.oneday.repository.ClassRepository;
+import com.oneday.repository.ClassTimeRepository;
 import com.oneday.repository.MemberRepository;
 import com.oneday.service.*;
 
@@ -44,6 +47,7 @@ public class ClassService {
 	private final ClassImgRepository classImgRepository;
 	private final CategoryRepository categoryRepository;
 	private final MemberRepository memberRepository;
+	private final ClassTimeRepository classTimeRepository;
 
 	
 	//클래스 등록
@@ -60,13 +64,21 @@ public class ClassService {
         for (ClassInfoDto classInfoDto : classFormDto.getClassInfos()) {
             ClassInfo classInfo = new ClassInfo();
             classInfo.setDate(classInfoDto.getDate());
-            classInfo.setTime(classInfoDto.getTime());
             classInfo.setMaxUser(maxUser);
             classInfo.setNowUser(nowUser);
             classInfo.setOnedayClass(onedayClass);
+            for (ClassTimeDto classTimeDto : classInfoDto.getClassTimes()) {
+                ClassTime classTime = new ClassTime();
+                classTime.setTime(classTimeDto.getTime());
+                classTime.setClassInfo(classInfo);
+                classTimeRepository.save(classTime);
+            }
             classInfoRepository.save(classInfo);
+            
+ 
         }
         
+
 
         classRepository.save(onedayClass);
 

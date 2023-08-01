@@ -63,9 +63,7 @@ public class ClassController {
 	  @GetMapping(value = "/oneday/list/1")
 	  public String categoryClass(Model model, ClassSearchDto classSearchDto, Optional<Integer> page) {
 		  Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
-		  System.out.println("여기 오긴함?????");
 		  Page<MainClassDto> classCt = classService.getCategoryClassPage(classSearchDto, pageable);
-		  System.out.println("그럼 여기는????????");
 		  model.addAttribute("classCt", classCt);
 		  model.addAttribute("classSearchDto", classSearchDto);
 		  model.addAttribute("maxPage", 5);

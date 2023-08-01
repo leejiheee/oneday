@@ -97,19 +97,20 @@
     <div class="dateTime" >
         <div class="timesContainer">
 	        <input type="date" id="date" name="date" th:field="*{classInfos[0].date}">
-	            <input type="time" id="time1" name="time" th:field="*{classInfos[0].time}">
-	            <input type="time" id="time2" name="time" th:field="*{classInfos[0].time}">
-	            <input type="time" id="time3" name="time" th:field="*{classInfos[0].time}">
+	            <input type="time" id="time1" th:field="*{classInfos[0].classTimes[0].time}">
+	            <input type="time" id="time2" th:field="*{classInfos[0].classTimes[1].time}">
+	            <input type="time" id="time3" th:field="*{classInfos[0].classTimes[2].time}">
 	            <br/>
 	        <input type="date" id="date" name="date" th:field="*{classInfos[1].date}">
-	            <input type="time" id="time1" name="time" th:field="*{classInfos[1].time}">
-	            <input type="time" id="time2" name="time" th:field="*{classInfos[1].time}">
-	            <input type="time" id="time3" name="time" th:field="*{classInfos[1].time}">
+	        	<input type="time" id="time1" th:field="*{classInfos[1].classTimes[0].time}">
+	            <input type="time" id="time2" th:field="*{classInfos[1].classTimes[1].time}">
+	            <input type="time" id="time3" th:field="*{classInfos[1].classTimes[2].time}">
 	            <br/>
 	        <input type="date" id="date" name="date" th:field="*{classInfos[2].date}">
-            	<input type="time" id="time1" name="time" th:field="*{classInfos[2].time}">
-            	<input type="time" id="time2" name="time" th:field="*{classInfos[2].time}">
-            	<input type="time" id="time3" name="time" th:field="*{classInfos[2].time}">
+	        	<input type="time" id="time1" th:field="*{classInfos[2].classTimes[0].time}">
+	            <input type="time" id="time2" th:field="*{classInfos[2].classTimes[1].time}">
+	            <input type="time" id="time3" th:field="*{classInfos[2].classTimes[2].time}">
+	            <br/>
         </div>
 
     </div>

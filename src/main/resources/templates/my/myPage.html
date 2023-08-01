@@ -9,7 +9,7 @@
 	</style>
 </th:block>
 	<div layout:fragment="content" style="width: 1200px; height: 2000px; margin: 0 auto;">
-		<form method="get" th:each="regist, status : ${regists.getContent()}">
+		<form method="get">
 			<table class="table">
 		  <thead>
 		    <tr>
@@ -20,7 +20,7 @@
 		      <th scope="col">가격</th>
 		    </tr>
 		  </thead>
-		  <tbody>
+		  <tbody  th:each="regist, status : ${regists.getContent()}">
 		    <tr th:each="registClass : ${regist.classRegistDtoList}">
 		      <th scope="row"><a href="" ></a></th>
 		      <td th:text="${registClass.classNm}"></td>

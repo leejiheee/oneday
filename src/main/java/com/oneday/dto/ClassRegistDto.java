@@ -1,7 +1,6 @@
 package com.oneday.dto;
 
 import com.oneday.entity.RegistClass;
-import com.oneday.entity.Time;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,8 @@ public class ClassRegistDto {
 	
 	private String date;
 	
-	private Time time;
+	private String time;
+
 	
 	
 	public ClassRegistDto(RegistClass classRegist, String imgUrl) {

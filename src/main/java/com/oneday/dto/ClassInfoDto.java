@@ -1,9 +1,12 @@
 package com.oneday.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 
 import com.oneday.entity.ClassInfo;
-import com.oneday.entity.Time;
+import com.oneday.entity.ClassTime;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +16,7 @@ import lombok.Setter;
 public class ClassInfoDto {
 	private String date;
 	
-	private Time time;
+	private List<ClassTimeDto> classTimes = new ArrayList<>();
 
 	private int maxUser;
 	

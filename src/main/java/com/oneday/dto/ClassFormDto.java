@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import com.oneday.constant.ClassEnd;
 import com.oneday.entity.Category;
 import com.oneday.entity.ClassInfo;
+import com.oneday.entity.ClassTime;
 import com.oneday.entity.OnedayClass;
 
 import jakarta.validation.constraints.*;
@@ -44,13 +45,15 @@ public class ClassFormDto {
 	
 	private ClassInfo infoId;
 	
+	private ClassTime classTimeId;
+	
 	private int maxUser;
 	
 	private int nowUser;
 	
-	private List<ClassInfoDto> classInfos = new ArrayList<>();
-	
-	
+	private List<ClassInfoDto> classInfos = new ArrayList<>();	
+
+
 	//이미지 정보 저장
 	private List<ClassImgDto> classImgDtoList = new ArrayList<>();
 	

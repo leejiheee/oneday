@@ -15,6 +15,7 @@ import com.oneday.dto.RegistDto;
 import com.oneday.dto.RegistHistDto;
 import com.oneday.entity.ClassImg;
 import com.oneday.entity.ClassInfo;
+import com.oneday.entity.ClassTime;
 import com.oneday.entity.Member;
 import com.oneday.entity.OnedayClass;
 import com.oneday.entity.Regist;
@@ -22,6 +23,7 @@ import com.oneday.entity.RegistClass;
 import com.oneday.repository.ClassImgRepository;
 import com.oneday.repository.ClassInfoRepository;
 import com.oneday.repository.ClassRepository;
+import com.oneday.repository.ClassTimeRepository;
 import com.oneday.repository.MemberRepository;
 import com.oneday.repository.RegistRepository;
 
@@ -37,6 +39,7 @@ public class RegistService {
 	private final RegistRepository registRepository;
 	private final ClassInfoRepository classInfoRepository;
 	private final ClassImgRepository classImgRepository;
+	private final ClassTimeRepository classTimeRepository;
 	
 	
 	//신청하기
@@ -47,12 +50,14 @@ public class RegistService {
 											.orElseThrow(EntityNotFoundException::new);
 		ClassInfo classInfo = classInfoRepository.findById(registDto.getClassId())
 											.orElseThrow(EntityNotFoundException::new);
+		ClassTime classTime = classTimeRepository.findById(registDto.getClassId())
+											.orElseThrow(EntityNotFoundException::new);
 	
 		//현재 로그인한 회원 이메일을 이용해 회원정보 조회
 		Member member = memberRepository.findByEmail(email);
 		
 		List<RegistClass> classRegistList = new ArrayList<>();
-		RegistClass classRegist = RegistClass.createClassRegist(onedayClass, classInfo, registDto.getCount());
+		RegistClass classRegist = RegistClass.createClassRegist(onedayClass, classInfo, classTime, registDto.getCount());
 		classRegistList.add(classRegist);
 		
 		//회원정보와 신청할 클래스 리스트 정보를 이용해 신청 엔티티 생성
