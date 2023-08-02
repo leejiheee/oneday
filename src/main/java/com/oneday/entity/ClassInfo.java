@@ -31,17 +31,13 @@ public class ClassInfo{
 	
 	@Id
 	@Column(name = "info_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable = false, length = 100)
 	private String date;
 
-	@Column(nullable = false)
-	private int maxUser;
-	
-	@Column(nullable = false)
-	private int nowUser;
+
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "class_id")
@@ -51,12 +47,5 @@ public class ClassInfo{
     private List<ClassTime> classTimes = new ArrayList<>();
 	
 	
-	public void removeUser(int nowUser) {
-		int registUser = this.nowUser + 1;
-		
-		  if(registUser > maxUser) { throw new OutOfUserException("모집인원이 마감되었습니다."); }
-		
-		this.nowUser = registUser;
-	}
 	
 }

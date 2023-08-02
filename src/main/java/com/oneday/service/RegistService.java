@@ -37,7 +37,6 @@ public class RegistService {
 	private final ClassRepository classRepository;
 	private final MemberRepository memberRepository;
 	private final RegistRepository registRepository;
-	private final ClassInfoRepository classInfoRepository;
 	private final ClassImgRepository classImgRepository;
 	private final ClassTimeRepository classTimeRepository;
 	
@@ -48,8 +47,6 @@ public class RegistService {
 		//신청할 클래스를 조회
 		OnedayClass onedayClass = classRepository.findById(registDto.getClassId())
 											.orElseThrow(EntityNotFoundException::new);
-		ClassInfo classInfo = classInfoRepository.findById(registDto.getClassId())
-											.orElseThrow(EntityNotFoundException::new);
 		ClassTime classTime = classTimeRepository.findById(registDto.getClassId())
 											.orElseThrow(EntityNotFoundException::new);
 	
@@ -57,7 +54,7 @@ public class RegistService {
 		Member member = memberRepository.findByEmail(email);
 		
 		List<RegistClass> classRegistList = new ArrayList<>();
-		RegistClass classRegist = RegistClass.createClassRegist(onedayClass, classInfo, classTime, registDto.getCount());
+		RegistClass classRegist = RegistClass.createClassRegist(onedayClass, classTime, registDto);
 		classRegistList.add(classRegist);
 		
 		//회원정보와 신청할 클래스 리스트 정보를 이용해 신청 엔티티 생성

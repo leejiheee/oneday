@@ -12,6 +12,10 @@ import lombok.Setter;
 public class ClassTimeDto {
 	private String time;
 	
+	private int maxUser;
+	
+	private int nowUser;
+	
 	private static ModelMapper modelMapper = new ModelMapper();
 
 	public static ClassTimeDto of(ClassTime classTime) {

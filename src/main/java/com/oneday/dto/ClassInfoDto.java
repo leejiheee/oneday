@@ -18,9 +18,7 @@ public class ClassInfoDto {
 	
 	private List<ClassTimeDto> classTimes = new ArrayList<>();
 
-	private int maxUser;
-	
-	private int nowUser;
+
 	
 	private static ModelMapper modelMapper = new ModelMapper();
 	

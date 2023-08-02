@@ -21,7 +21,7 @@ public class OnedayClass{
 	
 	@Id
 	@Column(name="class_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable = false, length = 255)

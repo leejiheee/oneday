@@ -34,6 +34,11 @@ public class RegistController {
 	@PostMapping(value = "/regist")
 	public @ResponseBody ResponseEntity regist(@RequestBody @Valid RegistDto registDto, BindingResult bindingResult, Principal principal) {
 		//Principal : 로그인한 사용자의 정보를 가져올 수 있다.
+		System.out.println(registDto.getCount());
+		System.out.println(registDto.getTime());
+		System.out.println(registDto.getDate());
+		System.out.println("asdasdasdasdasd");
+		
 		
 		if(bindingResult.hasErrors()) {
 			StringBuilder sb = new StringBuilder();

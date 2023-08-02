@@ -22,33 +22,6 @@
 	
 }
 
-td {
-	width: 50px;
-	height: 50px;
-}
-
-.Calendar {
-	text-align: center;
-	margin: 0 auto;
-}
-
-.Calendar>thead>tr:first-child>td {
-	font-weight: bold;
-}
-
-.Calendar>thead>tr:last-child>td {
-	background-color: gray;
-	color: white;
-}
-
-.pastDay {
-	background-color: lightgray;
-}
-
-.today {
-	background-color: #FFCA64;
-	cursor: pointer;
-}
 
 .futureDay {
 	background-color: #FFFFFF;
@@ -56,7 +29,7 @@ td {
 }
 
 .futureDay.choiceDay, .today.choiceDay {
-	background-color: #3E85EF;
+	background-color: #FFCA64;
 	color: #fff;
 	cursor: pointer;
 }
@@ -83,7 +56,7 @@ td {
 
 /* Checked */
 .form_radio_btn input[type=radio]:checked+label {
-	background: #184DA0;
+	background:#F3963C !important;
 	color: #fff;
 }
 
@@ -94,7 +67,7 @@ td {
 
 /* Disabled */
 .form_radio_btn input[type=radio]+label {
-	background: #F9FAFC;
+	background: #F3963C;
 	color: #666;
 }
 
@@ -199,6 +172,40 @@ li{list-style:none;}
 
   }
 
+.form_radio_btn {
+			width: 47%;
+			height : 45px;
+    		border: 1px solid #EAE7E7;
+    		border-radius: 10px;
+		}
+		.form_radio_btn input[type=radio] {
+			display: none;
+		}
+		.form_radio_btn label {
+			display: block;
+    		border-radius: 10px;
+   			margin: 0 auto;
+    		text-align: center;
+    		height: -webkit-fill-available;
+    		line-height: 45px;
+		}
+		 
+		/* Checked */
+		.form_radio_btn input[type=radio]:checked + label {
+			background: #184DA0;
+			color: #fff;
+		}
+		 
+		/* Hover */
+		.form_radio_btn label:hover {
+			color: #666;
+		}
+		 
+		/* Disabled */
+		.form_radio_btn input[type=radio] + label {
+			background: #F9FAFC;
+			color: #666;
+		}
 
 </style>
 </th:block>
@@ -246,15 +253,19 @@ li{list-style:none;}
 								<div class="mb-3">
 									<div
 										class="form_toggle" style="text-align: center;">
-											<div th:each="info, status: ${class.classInfos}">
-											    <button th:attr="id='date_' + ${status.index}" class="btn yellow rounded" th:value="${info.date}" th:if="${info.date != ''}" th:text="${info.date}" onclick="handleButtonClick()"></button>
-											    <div th:attr="id='time_' + ${status.index}">
-											    	<div class="form-check form-check-inline radio-css"  th:each="time, index : ${info.classTimes}">
-														  <input class="form-check-input" type="radio" name="inlineRadioOptions" th:attr="id='inlineRadio_' + ${index.index} + ${status.index}" th:value="${time.time}" th:if="${time.time != ''}">
-														  <label id="time"  th:text="${time.time}" class="form-check-label" th:attr="for='inlineRadio_' + ${index.index} + ${status.index}"></label>
-														</div>
-											    </div>
-											</div>
+
+										<div class="date-container" th:each="info, status: ${class.classInfos}">
+										    <div class="form_radio_btn radio_male">
+										        <input th:attr="id='date_' + ${status.index}" th:if="${info.date != ''}" name="dateSelecte" type="radio" th:value="${info.date}" onchange="toggleTime(event); date(event);">
+										        <label for="radio-1" th:text="${info.date}" th:attr="for='date_' + ${status.index}"></label>
+										    </div>
+										    <div th:attr="id='time_' + ${status.index}">
+										        <div class="form-check form-check-inline radio-css time-container" th:each="time, index : ${info.classTimes}">
+										            <input class="form-check-input" type="radio" name="inlineRadioOptions" th:attr="id='inlineRadio_' + ${index.index} + ${status.index}" th:value="${time.time}" th:if="${time.time != ''}" onchange="handleTimeClick(event); times(event);" disabled>
+										            <label id="time" th:text="${time.time}" class="form-check-label" th:attr="for='inlineRadio_' + ${index.index} + ${status.index}"></label>
+										        </div>
+										    </div>
+										</div>
 
 									</div>
 								</div>
@@ -263,23 +274,29 @@ li{list-style:none;}
 						</div>
 
 						<div class="d-block agent-box p-5">
-							<input type="text" id="hiddenDate" name="date" value="" style="border: none;">
+							<label>선택 날짜 : </label>
+							<input type="text" id="hiddenDate" name="hiddenDate" style="border: none;">
+							<label>선택 시간 : </label>
+							<input type="text" id="hiddenTime" name="hiddenTime" style="border: none;">
 							<div>
 							<div class="input-group mb-3" style="max-width: 120px;">
-								<div class="block">
+								<div class="block" style="margin: 0;">
 								  <div class="vtmn-quantity vtmn-quantity_size--small">
 								    <label for="my-quantity-1" style="font-size: 20px;">신청인원</label>
 								    <div class="vtmn-quantity_content" style="display:flex;">
-								      <input type="number" id="my-quantity-1"  style="width: 70px; height: 40px; font-size: 25px;"/>
+								      <input type="number" id="count" onchange="printTotal()" style="width: 70px; height: 40px; font-size: 25px;" />
 										<p style="font-size: 25px;">명</p>
 								    </div>
 								  </div>
 								</div>
 						</div>
 							<div>
-							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">가격</h5>
+							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">1인 당 가격</h5>
 							<strong id="price" class="text-primary h4" th:text="${class.price}"></strong>
-							<p id="totalPrice"></p>
+							<br/>
+							
+							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">최종 가격</h5>
+							<strong id="totalPrice" class="text-primary h4"></strong>
 						</div>
 							</div>
 						</div>
@@ -294,27 +311,61 @@ li{list-style:none;}
 <th:block layout:fragment="script">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script th:inline="javascript">
- 		$(document).ready(function() {
-			//처음 상세페이지 화면에 들어올때 총 상품금액이 보여야 하므로
-			calculateTotalPrice(); 
-			
-			//수량 -, + 버튼을 누를때마다 총 가격을 구한다.
-			$(".count_btn").click(function() {
-				calculateTotalPrice();
-			})
-		});
+	let selectedDate = null;
+	let selectedTime = null;
 
-		 function handleButtonClick() {
-			  var selectedValue = document.querySelector('button[id^="date_"]:focus').value;
-			  document.getElementById('hiddenDate').value = selectedValue;
-			}
-		 
-		function calculateTotalPrice() {
-			var count = $("#count").val(); //수량
-			var price = $("#price").val(); //가격
-			var totalPrice = (price * count).toLocaleString('ko-KR'); //천단위 콤마
-			$("#totalPrice").html(totalPrice + '원'); //총가격 출력
-		}
+    function toggleTime(event) {
+        // 모든 time 버튼 비활성화
+        const timeButtons = document.querySelectorAll('.form-check-input');
+        timeButtons.forEach(button => {
+            button.disabled = true;
+        });
+
+        const selectedIndex = event.target.getAttribute('id').replace('date_', '');
+        const selectedTimeContainer = document.querySelector('#time_' + selectedIndex);
+
+        // 선택한 date에 대응하는 time 버튼 활성화
+        const selectedTimeButtons = selectedTimeContainer.querySelectorAll('input[type="radio"]');
+        selectedTimeButtons.forEach(button => {
+            button.disabled = false;
+        });
+
+        selectedDate = event.target.value; // 선택한 date 값을 selectedDate 변수에 저장
+    }
+
+    function handleTimeClick(event) {
+        if (!selectedDate || event.target.closest('.date-container') !== selectedDate) {
+            // 선택한 date 버튼이 없거나 선택한 date와 time 버튼의 부모 요소가 다르면 선택을 막음
+            event.preventDefault();
+            return;
+        }
+        // 여기서 선택한 time 버튼에 대한 추가적인 처리를 수행할 수 있음
+    }
+    
+    function date(event) {
+        const selectedTime = event.target.value;
+        document.getElementById('hiddenDate').value = selectedTime;
+        console.log($("#hiddenDate").val());
+    }
+
+    function times(event) {
+        const selectedDate = event.target.value;
+        document.getElementById('hiddenTime').value = selectedDate;
+        console.log($("#hiddenTime").val());
+    }
+ 
+    function printTotal()  {
+        calculateTotalPrice();
+    }
+
+    function calculateTotalPrice() {
+        var count = $("#count").val(); //수량
+        console.log(count);
+        var price = [[${class.price}]] //가격
+        console.log(price);
+        var totalPrice = (price * count).toLocaleString('ko-KR'); //천단위 콤마
+        $("#totalPrice").html(totalPrice + '원'); //총가격 출력
+    }
 		
 		function regist() {
 			var token = $("meta[name='_csrf']").attr("content"); // meta태그에서 값이 _csrf인 값을 가져오겠다~
@@ -327,8 +378,8 @@ li{list-style:none;}
 			var paramData = {
 				classId : $("#classId").val(), // class_id
 				count : $("#count").val(), // 수량
-				time : $("#inlineRadio").val(),
-				date : $("#date").val()
+				time : $("#hiddenTime").val(),
+				date : $("#hiddenDate").val(),
 			}
 
 			// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.
@@ -347,6 +398,9 @@ li{list-style:none;}
 				dataType : "json",
 				cache : false,
 				success : function(result, status) {
+					alert(param);
+					alert(count);
+					alert(totalPrice);
 					alert("신청이 완료 되었습니다." + result);
 					location.href = '/';
 				},

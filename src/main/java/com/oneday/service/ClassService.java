@@ -58,14 +58,10 @@ public class ClassService {
 		
 		OnedayClass onedayClass = classFormDto.createClass(category, classFormDto.getClassInfos());
 		
-		int maxUser = classFormDto.getMaxUser();
-		int nowUser = classFormDto.getNowUser();
 		
         for (ClassInfoDto classInfoDto : classFormDto.getClassInfos()) {
             ClassInfo classInfo = new ClassInfo();
             classInfo.setDate(classInfoDto.getDate());
-            classInfo.setMaxUser(maxUser);
-            classInfo.setNowUser(nowUser);
             classInfo.setOnedayClass(onedayClass);
             for (ClassTimeDto classTimeDto : classInfoDto.getClassTimes()) {
                 ClassTime classTime = new ClassTime();

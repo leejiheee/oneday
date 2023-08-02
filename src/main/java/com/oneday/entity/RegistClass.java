@@ -1,5 +1,7 @@
 package com.oneday.entity;
 
+import com.oneday.dto.RegistDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,7 +24,7 @@ public class RegistClass extends BaseEntity{
 	
 	@Id
 	@Column(name = "regist_class_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -42,15 +44,16 @@ public class RegistClass extends BaseEntity{
 	private String time;
 	
 	
-	public static RegistClass createClassRegist(OnedayClass onedayClass, ClassInfo classInfo, ClassTime classTime, int count) {
+	public static RegistClass createClassRegist(OnedayClass onedayClass, ClassTime classTime,RegistDto registDto) {
 		RegistClass classRegist = new RegistClass();
 		classRegist.setOnedayClass(onedayClass);
-		classRegist.setCount(count);
-		classRegist.setRegistPrice(onedayClass.getPrice());
-		classRegist.setDate(classInfo.getDate());
-		classRegist.setTime(classTime.getTime());
+		classRegist.setCount(registDto.getCount());
+		classRegist.setDate(registDto.getDate());
+		classRegist.setTime(registDto.getTime());
+		classRegist.setRegistPrice(registDto.getTotalPrice());
 		
-		classInfo.removeUser(count); //현재 신청인원을 증가시킴
+		
+		classTime.removeUser(registDto.getCount()); //현재 신청인원을 증가시킴
 		
 		return classRegist;
 	}
