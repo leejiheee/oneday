@@ -51,6 +51,7 @@ public class OnedayClass{
 	@Enumerated(EnumType.STRING)
 	private ClassEnd classEnd; //마감 상태
 	
+	
 	//class엔티티 수정
 	public void updateClass(ClassFormDto classFormDto, Category category) {
 		this.classNm = classFormDto.getClassNm();

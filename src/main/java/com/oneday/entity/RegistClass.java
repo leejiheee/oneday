@@ -62,4 +62,7 @@ public class RegistClass extends BaseEntity{
 		return registPrice * count;
 	}
 	
+
+	
+	
 }

@@ -45,7 +45,7 @@ public class ClassInfo{
 	
     @OneToMany(mappedBy = "classInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClassTime> classTimes = new ArrayList<>();
-	
+
 	
 	
 }

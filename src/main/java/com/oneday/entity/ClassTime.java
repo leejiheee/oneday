@@ -39,6 +39,7 @@ public class ClassTime {
 	@JoinColumn(name = "info_id")
 	private ClassInfo classInfo;
 	
+	//모집가능 인원 감소
 	public void removeUser(int count) {
 		int user = this.nowUser + count;
 		
@@ -48,4 +49,11 @@ public class ClassTime {
 		
 		this.nowUser = user;
 	}
+	
+	//신청한 회원이 취소했을 때
+	public void addUser(int count) {
+		this.nowUser -= count;
+	}
+	
+
 }
