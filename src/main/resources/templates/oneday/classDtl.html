@@ -296,7 +296,7 @@ li{list-style:none;}
 							<br/>
 							
 							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">최종 가격</h5>
-							<strong id="totalPrice" class="text-primary h4"></strong>
+							<strong id="registPrice" class="text-primary h4" ></strong>
 						</div>
 							</div>
 						</div>
@@ -380,6 +380,7 @@ li{list-style:none;}
 				count : $("#count").val(), // 수량
 				time : $("#hiddenTime").val(),
 				date : $("#hiddenDate").val(),
+				totalPrice : $("#price").val()
 			}
 
 			// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.
@@ -398,10 +399,6 @@ li{list-style:none;}
 				dataType : "json",
 				cache : false,
 				success : function(result, status) {
-					alert(param);
-					alert(count);
-					alert(totalPrice);
-					alert("신청이 완료 되었습니다." + result);
 					location.href = '/';
 				},
 				error : function(jqXHR, status, error) {

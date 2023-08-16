@@ -158,7 +158,6 @@ public class ClassService {
 	//클래스 삭제
 	public void deleteClass(Long classId) {
 		OnedayClass onedayClass = classRepository.findById(classId).orElseThrow(EntityNotFoundException::new);
-		
 		classRepository.delete(onedayClass);
 	}
 

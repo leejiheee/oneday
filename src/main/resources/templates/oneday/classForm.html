@@ -290,63 +290,7 @@
 		        }
 		    }
 		}
-/* 		
-	    let dateCount = 0;
-	    let timeCount = [];
 
-	    function addDateTimeInput() {
-	        if (dateCount < 5) {
-	            const dateInput = document.createElement('input');
-	            dateInput.type = 'date';
-	            dateInput.name = 'date';
-	            dateInput.id = 'date';
-	            document.getElementById('dateTimeContainer').appendChild(dateInput);
-
-	            const addTimeBtn = document.createElement('button');
-	            addTimeBtn.innerHTML = 'Add Time';
-	            addTimeBtn.id = 'addTimeBtn-' + dateCount; // id에 날짜 인덱스를 추가하여 버튼 생성
-	            addTimeBtn.addEventListener('click', (event) => {
-	                event.preventDefault();
-	                const dateIndex = parseInt(event.target.id.split('-')[1]); // id에서 날짜 인덱스를 추출
-	                addTimeInput(dateIndex);
-	            });
-	            document.getElementById('dateTimeContainer').appendChild(addTimeBtn);
-
-	            const lineBreak = document.createElement('br');
-	            document.getElementById('dateTimeContainer').appendChild(lineBreak);
-
-	            // 해당 날짜의 시간 개수를 초기화
-	            timeCount[dateCount] = 0;
-
-	            dateCount++;
-	        }
-
-	        if (dateCount === 5) {
-	            document.getElementById('addDateTimeBtn').disabled = true;
-	        }
-	    }
-
-	    function addTimeInput(dateIndex) {
-	        if (timeCount[dateIndex] < 5) { // 각 날짜별로 최대 5개까지 시간 추가
-	            const timeInput = document.createElement('input');
-	            timeInput.type = 'time';
-	            timeInput.name = 'time';
-	            timeInput.id = 'time';
-	            document.getElementById('dateTimeContainer').appendChild(timeInput);
-	            timeCount[dateIndex]++;
-
-	            if (timeCount[dateIndex] === 5) {
-	                const addTimeBtn = document.getElementById('addTimeBtn-' + dateIndex);
-	                addTimeBtn.style.visibility = 'hidden'; // 버튼을 숨김 처리
-	            }
-	        }
-	    }
-
-	    document.getElementById('addDateTimeBtn').addEventListener('click', addDateTimeInput);
-
-	    // 처음 날짜에서 시간 추가 가능하도록 추가
-	    addDateTimeInput();
-	     */
 		</script>
 
 	</th:block>

@@ -37,7 +37,6 @@ public class RegistController {
 		System.out.println(registDto.getCount());
 		System.out.println(registDto.getTime());
 		System.out.println(registDto.getDate());
-		System.out.println("asdasdasdasdasd");
 		
 		
 		if(bindingResult.hasErrors()) {

@@ -1,5 +1,8 @@
 package com.oneday.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.oneday.exception.OutOfUserException;
 
 import jakarta.persistence.Column;
@@ -36,6 +39,7 @@ public class ClassTime {
 	private int nowUser = 0;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action= OnDeleteAction.CASCADE)
 	@JoinColumn(name = "info_id")
 	private ClassInfo classInfo;
 	

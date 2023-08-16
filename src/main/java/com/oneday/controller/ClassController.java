@@ -188,6 +188,7 @@ public class ClassController {
 		//클래스 삭제
 		@DeleteMapping("/admin/{classId}/delete")
 		public @ResponseBody ResponseEntity deleteClass(@PathVariable("classId")Long classId, Principal principal) {
+			System.out.println(classId);
 			classService.deleteClass(classId);
 			
 			return new ResponseEntity<Long>(classId, HttpStatus.OK);

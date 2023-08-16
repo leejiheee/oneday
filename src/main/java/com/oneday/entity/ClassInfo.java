@@ -3,6 +3,9 @@ package com.oneday.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.oneday.constant.ClassEnd;
 import com.oneday.dto.ClassFormDto;
 import com.oneday.exception.OutOfUserException;
@@ -40,6 +43,7 @@ public class ClassInfo{
 
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action= OnDeleteAction.CASCADE)
 	@JoinColumn(name = "class_id")
 	private OnedayClass onedayClass;
 	

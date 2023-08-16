@@ -16,5 +16,6 @@ import com.oneday.entity.OnedayClass;
 
 public interface ClassRepository extends JpaRepository<OnedayClass, Long>, ClassRepositoryCustom{
 	List<OnedayClass> findByClassNm(String classNm);
+	
 
 } 
