@@ -59,20 +59,29 @@ public class ClassService {
 		OnedayClass onedayClass = classFormDto.createClass(category, classFormDto.getClassInfos());
 		
 		
-        for (ClassInfoDto classInfoDto : classFormDto.getClassInfos()) {
-            ClassInfo classInfo = new ClassInfo();
-            classInfo.setDate(classInfoDto.getDate());
-            classInfo.setOnedayClass(onedayClass);
-            for (ClassTimeDto classTimeDto : classInfoDto.getClassTimes()) {
-                ClassTime classTime = new ClassTime();
-                classTime.setTime(classTimeDto.getTime());
-                classTime.setClassInfo(classInfo);
-                classTimeRepository.save(classTime);
-            }
-            classInfoRepository.save(classInfo);
-            
- 
-        }
+	    for (ClassInfoDto classInfoDto : classFormDto.getClassInfos()) {
+	        // 날짜 데이터가 비어있는 경우 해당 클래스 정보를 무시
+	        if (classInfoDto.getDate() == null || classInfoDto.getDate().isEmpty()) {
+	            continue;
+	        }
+	        
+	        ClassInfo classInfo = new ClassInfo();
+	        classInfo.setDate(classInfoDto.getDate());
+	        classInfo.setOnedayClass(onedayClass);
+	        for (ClassTimeDto classTimeDto : classInfoDto.getClassTimes()) {
+	            // 시간 데이터가 비어있는 경우 해당 시간 정보를 무시
+	            if (classTimeDto.getTime() == null || classTimeDto.getTime().isEmpty()) {
+	                continue;
+	            }
+	            
+	            ClassTime classTime = new ClassTime();
+	            classTime.setTime(classTimeDto.getTime());
+	            classTime.setClassInfo(classInfo);
+	            classTimeRepository.save(classTime);
+	        }
+	        classInfoRepository.save(classInfo);
+	    }
+
         
 
 
@@ -122,14 +131,12 @@ public class ClassService {
 		OnedayClass onedayClass = classRepository.findById(classId)
 												.orElseThrow(EntityNotFoundException::new);
 		
-		System.out.println(onedayClass.toString());
 		//엔티티 -> Dto로 변환
 		ClassFormDto classFormDto = ClassFormDto.of(onedayClass);
 		
 		//이미지 정보를 classFormDto에 넣어준다
 		classFormDto.setClassImgDtoList(classImgDtoList);
 		
-		System.out.println(classInfoDtoList);
 		classFormDto.setClassInfos(classInfoDtoList);
 		
 		return classFormDto;
@@ -148,6 +155,7 @@ public class ClassService {
 		List<Long> classImgIds = classFormDto.getClassImgIds();
 		
 		for(int i = 0; i<classImgFileList.size(); i++) {
+
 			classImgService.updateClassImg(classImgIds.get(i), classImgFileList.get(i));
 		
 		}

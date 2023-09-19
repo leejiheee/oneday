@@ -40,8 +40,11 @@ public class ClassImgService {
 	}
 
 	public void updateClassImg(Long classImgId, MultipartFile classImgFile) throws Exception {
+		System.out.println("오긴한거고??");
 		if(!classImgFile.isEmpty()) {
 			ClassImg savedClassImg = classImgRepository.findById(classImgId).orElseThrow(EntityNotFoundException::new);
+			
+			System.out.println(savedClassImg + "111111111111111111");
 			
 			if(!StringUtils.isEmpty(savedClassImg.getImgName())) {
 				fileService.deleteFile(classImgLocation + "/" + savedClassImg.getImgName());
