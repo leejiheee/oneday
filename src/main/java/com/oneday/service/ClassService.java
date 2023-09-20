@@ -99,7 +99,7 @@ public class ClassService {
 			}
 			classImgService.saveClassImg(classImg, classImgFileList.get(i));
 		}
-		
+				
 		
 		
 		return onedayClass.getId();
@@ -153,6 +153,8 @@ public class ClassService {
 		onedayClass.updateClass(classFormDto, category);
 		
 		List<Long> classImgIds = classFormDto.getClassImgIds();
+		
+		System.out.println(classImgIds + "@##22222222222222");
 		
 		for(int i = 0; i<classImgFileList.size(); i++) {
 
