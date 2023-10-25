@@ -21,7 +21,15 @@
                   <span class="d-block mb-2 text-black-50" th:text="${class.region}"></span
                   >
                   <span class="city d-block mb-3" th:text="${class.classNm}"></span>
+					
+				 <div class="specs d-flex mb-4">
+                     <span class="d-block d-flex align-items-center me-3">
+                       <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+                          &nbsp
+                          <span class="caption" th:text="${#numbers.formatDecimal(class.averageRating, 1, 1)}"></span>
+                        </span>
 
+                      </div>
 
                   <a
                     th:href="'/oneday/' + ${class.id}"

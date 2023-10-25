@@ -44,16 +44,14 @@ public class RegistClass extends BaseEntity{
 	private String time;
 	
 	
-	public static RegistClass createClassRegist(OnedayClass onedayClass, ClassTime classTime,RegistDto registDto) {
+	public static RegistClass createClassRegist(OnedayClass onedayClass, RegistDto registDto) {
 		RegistClass classRegist = new RegistClass();
 		classRegist.setOnedayClass(onedayClass);
 		classRegist.setCount(registDto.getCount());
 		classRegist.setDate(registDto.getDate());
 		classRegist.setTime(registDto.getTime());
 		classRegist.setRegistPrice(registDto.getTotalPrice());
-		
-		
-		classTime.removeUser(registDto.getCount()); //현재 신청인원을 증가시킴
+
 		
 		return classRegist;
 	}
@@ -61,6 +59,7 @@ public class RegistClass extends BaseEntity{
 	public int getTotalPrice() {
 		return registPrice * count;
 	}
+	
 	
 
 	

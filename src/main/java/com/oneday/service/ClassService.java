@@ -19,18 +19,21 @@ import com.oneday.dto.ClassInfoDto;
 import com.oneday.dto.ClassSearchDto;
 import com.oneday.dto.ClassTimeDto;
 import com.oneday.dto.MainClassDto;
+import com.oneday.dto.ReviewDto;
 import com.oneday.entity.Category;
 import com.oneday.entity.ClassImg;
 import com.oneday.entity.ClassInfo;
 import com.oneday.entity.ClassTime;
 import com.oneday.entity.Member;
 import com.oneday.entity.OnedayClass;
+import com.oneday.entity.Review;
 import com.oneday.repository.CategoryRepository;
 import com.oneday.repository.ClassImgRepository;
 import com.oneday.repository.ClassInfoRepository;
 import com.oneday.repository.ClassRepository;
 import com.oneday.repository.ClassTimeRepository;
 import com.oneday.repository.MemberRepository;
+import com.oneday.repository.ReviewRepository;
 import com.oneday.service.*;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -48,6 +51,7 @@ public class ClassService {
 	private final CategoryRepository categoryRepository;
 	private final MemberRepository memberRepository;
 	private final ClassTimeRepository classTimeRepository;
+	private final ReviewRepository reviewRepository;
 
 	
 	//클래스 등록
@@ -126,6 +130,9 @@ public class ClassService {
 			ClassInfoDto classInfoDto = ClassInfoDto.of(classInfo);
 			classInfoDtoList.add(classInfoDto);
 		}
+		
+		
+
 
 		//테이블 데이터 가져오기
 		OnedayClass onedayClass = classRepository.findById(classId)
@@ -138,6 +145,7 @@ public class ClassService {
 		classFormDto.setClassImgDtoList(classImgDtoList);
 		
 		classFormDto.setClassInfos(classInfoDtoList);
+		
 		
 		return classFormDto;
 	}
@@ -153,9 +161,7 @@ public class ClassService {
 		onedayClass.updateClass(classFormDto, category);
 		
 		List<Long> classImgIds = classFormDto.getClassImgIds();
-		
-		System.out.println(classImgIds + "@##22222222222222");
-		
+				
 		for(int i = 0; i<classImgFileList.size(); i++) {
 
 			classImgService.updateClassImg(classImgIds.get(i), classImgFileList.get(i));

@@ -43,23 +43,34 @@ public class RegistService {
 	
 	//신청하기
 	public Long regist(RegistDto registDto, String email) {
-		
 		//신청할 클래스를 조회
 		OnedayClass onedayClass = classRepository.findById(registDto.getClassId())
 											.orElseThrow(EntityNotFoundException::new);
-		ClassTime classTime = classTimeRepository.findById(registDto.getClassId())
-											.orElseThrow(EntityNotFoundException::new);
-	
+
+		
 		//현재 로그인한 회원 이메일을 이용해 회원정보 조회
 		Member member = memberRepository.findByEmail(email);
 		
 		List<RegistClass> classRegistList = new ArrayList<>();
-		RegistClass classRegist = RegistClass.createClassRegist(onedayClass, classTime, registDto);
+		RegistClass classRegist = RegistClass.createClassRegist(onedayClass,registDto);
 		classRegistList.add(classRegist);
 		
 		//회원정보와 신청할 클래스 리스트 정보를 이용해 신청 엔티티 생성
 		Regist regist = Regist.createRegist(member, classRegistList);
 		registRepository.save(regist);
+		
+		//신청한 인원수만큼 현재인원이 늘어난다.
+		List<ClassInfo> classInfoList = onedayClass.getClassInfos();
+		for (ClassInfo classInfo : classInfoList) {
+			List<ClassTime> classTimeList = classInfo.getClassTimes();
+		    for(ClassTime classTime : classTimeList) {
+		    	if(classTime.getTime().equals(registDto.getTime())) {
+		    		classTime.removeUser(registDto.getCount());		    		
+		    	}
+		    }
+		}
+
+
 		
 		return regist.getId();
 		
@@ -88,7 +99,9 @@ public class RegistService {
 		}
 		
 		return new PageImpl<RegistHistDto>(registHistDtos, pageable, totalCount);
-	}	
+	}
+	
+	
 	
 	public boolean validateRegist(Long registId, String email) {
 		Member curMember = memberRepository.findByEmail(email);
@@ -100,6 +113,38 @@ public class RegistService {
 			return false;
 		}
 		return true;
+	}
+	
+	
+	//예약취소
+	public void cancelRegist(Long registId) {
+		Regist regist = registRepository.findById(registId)
+									.orElseThrow(EntityNotFoundException::new);
+
+		regist.cancelRegist();
+		
+		List<RegistClass> registClassList = regist.getClassRegists();
+		for(RegistClass registClass : registClassList) {
+			List<ClassInfo> classInfoList = registClass.getOnedayClass().getClassInfos();
+			for(ClassInfo classInfo : classInfoList) {
+				List<ClassTime> classTimeList = classInfo.getClassTimes();
+				for(ClassTime classTime : classTimeList) {
+					if(classTime.getTime().equals(registClass.getTime())) {
+						classTime.addUser(registClass.getCount());
+					}
+				}
+			}
+			
+		}
+		
+	}
+	
+	//예약내역 삭제
+	public void deleteRegist(Long registId) {
+		Regist regist = registRepository.findById(registId)
+				.orElseThrow(EntityNotFoundException::new);
+		
+		registRepository.delete(regist);
 	}
 	
 }

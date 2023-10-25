@@ -76,7 +76,7 @@ public class ClassRepositoryCustomImpl implements ClassRepositoryCustom{
 		
 		List<MainClassDto> content = queryFactory.select(
 				new QMainClassDto(onedayClass.id, onedayClass.classNm, onedayClass.classDetail, classImg.imgUrl,
-						onedayClass.price, onedayClass.teacherNm, onedayClass.region, onedayClass.regionDtl, onedayClass.category)
+						onedayClass.price, onedayClass.teacherNm, onedayClass.region, onedayClass.regionDtl, onedayClass.averageRating, onedayClass.category)
 				)
 				.from(classImg)
 				.join(classImg.onedayClass, onedayClass)
@@ -103,7 +103,7 @@ public class ClassRepositoryCustomImpl implements ClassRepositoryCustom{
 		
 		  List<MainClassDto> content = queryFactory.select(
 				  new QMainClassDto(onedayClass.id, onedayClass.classNm, onedayClass.classDetail, classImg.imgUrl, onedayClass.price, onedayClass.teacherNm,
-		  onedayClass.region, onedayClass.regionDtl, onedayClass.category) )
+		  onedayClass.region, onedayClass.regionDtl, onedayClass.averageRating, onedayClass.category) )
 		  .from(classImg)
 		  .join(classImg.onedayClass, onedayClass)
 		  .where(classImg.repimgYn.eq("Y"))

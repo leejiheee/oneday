@@ -1,5 +1,5 @@
 package com.oneday.constant;
 
 public enum RegistStatus {
-	REGIST, CANCLE
+	REGIST, CANCLE, COMPLETE, REVIEW
 }

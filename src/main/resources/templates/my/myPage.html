@@ -3,6 +3,11 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
 
+<head>
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+
 
 <th:block layout:fragment="css">
 	<style>
@@ -41,9 +46,24 @@
 		.para{
 			font-size: 16px
 		}
+		
+		.fa-star {
+			letter-spacing: -3px;
+		}
+		
+		.star {
+			margin-right: 5px;
+		}
+		
+		.custom-radio input[type="radio"] {
+      -ms-transform: scale(1.5); /* IE 9 */
+      -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+      transform: scale(1.5);
+      }
+      
 	</style>
 </th:block>
-	<div layout:fragment="content" style="width: 1200px; height: 2000px; margin: 0 auto;">
+	<div layout:fragment="content" style="width: 1200px; height: 2000px; margin: 150px auto;">
 		<div class="container mt-5 mb-5">
     <div class="d-flex justify-content-center row">
         <div class="col-md-10" th:each="regist, status : ${regists.getContent()}" >
@@ -52,21 +72,200 @@
                 <div class="col-md-6 mt-1">
                     <h5 th:text="${registClass.classNm}"></h5>
                     <div class="d-flex flex-row">
-                        <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span th:text="${status.size}"></span>
+                        <div class="ratings mr-2"><i class="fa-solid fa-star" style="color: #ffd60a;"></i><i class="fa-solid fa-star" style="color: #ffd60a;"></i><i class="fa-solid fa-star" style="color: #ffd60a;"></i><i class="fa-solid fa-star" style="color: #ffd60a;"></i><i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+                        </div>
+                        <span th:text="${status.size}"></span>
                     </div>
                     <div class="mt-1 mb-1 spec-1"><span class="dot"></span><span th:text="${registClass.date}"></span><span class="dot"></span><span th:text="${registClass.time}"></span></div>
-                    <p class="text-justify text-truncate para mb-0">날짜와 시간 확인 부탁드립니다.<br><br></p>
+                    <p th:if="${#strings.equals(regist.registStatus, 'REGIST')}" class="text-justify text-truncate para mb-0">날짜와 시간 확인 부탁드립니다.<br><br></p>
+                    <p th:if="${#strings.equals(regist.registStatus, 'CANCEL')}" class="text-justify text-truncate para mb-0">취소된 클래스입니다.<br><br></p>
+                    <p th:if="${#strings.equals(regist.registStatus, 'COMPLETE')}" class="text-justify text-truncate para mb-0">완료된 클래스입니다.<br><br></p>
                 </div>
                 <div class="align-items-center align-content-center col-md-3 border-left mt-1">
                     <div class="d-flex flex-row align-items-center">
                         <h4 class="mr-1" >[[${#numbers.formatInteger(registClass.registPrice * registClass.count, 0, 'COMMA') + '원'}]]</h4>
                     </div>
                     <h6 class="text-success" th:text="${registClass.count + '명'}"></h6>
-                    <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm" type="button">클래스 확인하러 가기</button><button class="btn btn-outline-primary btn-sm mt-2" type="button">클래스 취소하기</button></div>
+                    <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm" type="button" th:onclick="|location.href='/oneday/' + ${registClass.classId}|">클래스 확인하러 가기</button>
+                    <th:block th:if="${#strings.equals(regist.registStatus, 'REGIST')}">
+                    <button class="btn btn-outline-primary btn-sm mt-2" type="button" th:value="${regist.registId}" onclick="cancelRegist(this.value)">클래스 취소하기</button>
+                    </th:block>
+                    <th:block th:if="${#strings.equals(regist.registStatus, 'CANCEL')}">
+                    <button class="btn btn-outline-primary btn-sm mt-2" type="button" th:value="${regist.registId}" onclick="deleteRegist(this.value)">클래스 삭제하기</button>                    
+                    </th:block>
+                    <th:block th:if="${#strings.equals(regist.registStatus, 'COMPLETE')}">
+                    <button class="btn btn-outline-primary btn-sm mt-2" type="button" data-bs-toggle="modal" th:attr="data-bs-target=${'#exampleModal'+ regist.registId}">리뷰쓰기</button>                                 
+                    </th:block>
+                    <th:block th:if="${#strings.equals(regist.registStatus, 'REVIEW')}">
+                    <button class="btn btn-outline-primary btn-sm mt-2" type="button" data-bs-toggle="modal" disabled>리뷰완료</button>                                 
+                    </th:block>
+                    
+						<!-- 리뷰 모달 -->
+					<div class="modal fade" th:attr="id='exampleModal'+ ${regist.registId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-dialog-centered">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h3 class="modal-title fs-5" id="exampleModalLabel" th:text="${registClass.classNm}"></h3>
+					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					      </div>
+					      <div class="modal-body">
+					        <form role="form" id="reviewForm" name="reviewForm" th:action="@{/review/} + ${registClass.classId}" method="post" th:object="${reviewDto}">
+					        	<input type="hidden" id="classId" name="classId" th:value="${registClass.classId}" >
+					        	<input type="hidden" id="registId" name="registId" th:value="${regist.registId}" >
+					          <!-- 별점 선택 -->
+					          <div class="form-group" style="margin-bottom: 10px;">
+					            <label for="rating">별점:</label>
+					            <br>
+								  <input type="radio" name="reviewScore" value="5">
+								  <label for="star5" class="star" >
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  </label> 
+								  <input type="radio" name="reviewScore" value="4">
+								  <label for="star4" class="star">
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  </label>
+								  <input type="radio" name="reviewScore" value="3">
+								  <label for="star3" class="star">
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  </label>
+								  <input type="radio" name="reviewScore" value="2">
+								  <label for="star2" class="star">
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  <i class="fa-solid fa-star" style="color: #ffd60a;"></i>
+								  </label>
+								  <input type="radio" name="reviewScore" value="1">
+								  <label for="star1" class="star"><i class="fa-solid fa-star" style="color: #ffd60a;"></i></label>
+					          </div>
+					          <!-- 리뷰 텍스트 입력 -->
+					          <div class="form-group">
+					            <label for="reviewText">리뷰:</label>
+					            <textarea class="form-control" id="reviewText" name="reviewContent" rows="4"></textarea>
+					          </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					        <button type="submit" class="btn btn-primary" onclick="saveReview()">리뷰 등록</button>
+					      </div>
+					        </form>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+					
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 		</div>
+
+<th:block layout:fragment="script">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script>
+	function cancelRegist(registId) {
+		const cancelconf = confirm("예약을 취소하시겠습니까?");
+		if(!cancelconf) return;
+		
+		alert(registId);
+		var token = $("meta[name='_csrf']").attr("content"); // meta태그에서 값이 _csrf인 값을 가져오겠다~
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		var url = "/regist/" + registId + "/cancel";
+		
+		//서버로 보내줄 데이터(반드시 JSON  -> string 타입으로 바꿔야한다.)
+		var paramData = {
+			registId : registId	
+		};
+		
+		var param = JSON.stringify(paramData);
+		
+			$.ajax({
+				url : url,
+				type : "POST", //전송방식
+				contentType : "application/json",
+				data : param,
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					var path = location.pathname;
+					var page = path.substring(path.lastIndexOf("/") + 1);
+					
+					if(page == 'regist') {
+						page = 0;
+					}
+					//주문취소 후에 해당 페이지로 이동시켜준다.
+					location.href= '/regists';
+				},
+				error : function(jqXHR, status, error) {
+					if(jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/login';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+	}
+	
+	function deleteRegist(registId) {
+		const deleteconf = confirm("내역을 삭제하시겠습니까?");
+		if(!deleteconf) return;
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		var url = "/regist/" + registId + "/delete";
+			$.ajax({
+				url : url,
+				type : "DELETE", //전송방식
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+
+					location.href= '/regists'
+				},
+				error : function(jqXHR, status, error) {
+					if(jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/login';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+	}
+	
+	
+		/* 리뷰작성 */
+		function saveReview() {
+		    const f = document.reviewForm;
+		
+		    f.submit();
+		}
+		
+		
+		
+
+	</script>
+</th:block>
 </html>

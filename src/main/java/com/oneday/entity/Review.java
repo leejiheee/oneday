@@ -20,6 +20,11 @@ public class Review extends BaseEntity{
 	@Column(nullable = false)
 	private int reviewScore;
 	
+	@OneToOne
+	@JoinColumn(name="regist_id")
+	@OnDelete(action= OnDeleteAction.CASCADE)
+	private Regist regist;
+	
 	@Lob
 	@Column(nullable = false)
 	private String reviewContent;

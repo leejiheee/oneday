@@ -43,13 +43,22 @@ public class OnedayClass{
 	@Column(nullable = false, length = 255)
 	private String regionDtl;
 	
+	@Column(columnDefinition = "DOUBLE DEFAULT 0.0")
+	private double averageRating;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
 	@OnDelete(action= OnDeleteAction.CASCADE)
 	private Category category;
 	
+    @OneToMany(mappedBy = "onedayClass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClassInfo> classInfos = new ArrayList<>();
+	
 	@Enumerated(EnumType.STRING)
 	private ClassEnd classEnd; //마감 상태
+	
+    @OneToMany(mappedBy = "onedayClass", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Review> reviewList = new ArrayList<>();
 	
 	
 	//class엔티티 수정

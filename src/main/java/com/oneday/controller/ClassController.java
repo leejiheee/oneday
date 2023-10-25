@@ -27,9 +27,11 @@ import com.oneday.dto.ClassFormDto;
 import com.oneday.dto.ClassInfoDto;
 import com.oneday.dto.ClassSearchDto;
 import com.oneday.dto.MainClassDto;
+import com.oneday.dto.ReviewDto;
 import com.oneday.entity.Category;
 import com.oneday.entity.OnedayClass;
 import com.oneday.service.ClassService;
+import com.oneday.service.ReviewService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,14 +40,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 @Controller
+@RequiredArgsConstructor
 public class ClassController {
 
 		private final ClassService classService;
-		
-		@Autowired
-	    public ClassController(ClassService classService) {
-	        this.classService = classService;
-	    }
+		private final ReviewService reviewService;
 	  
 	  //클래스 리스트
 	  @GetMapping(value= "/oneday/list")
@@ -97,12 +96,6 @@ public class ClassController {
 			  model.addAttribute("errorMessage", "첫번째 클래스 이미지는 필수입니다.");
 			  return "oneday/classForm";
 		  }
-		  System.out.println(classFormDto.getClassDetail() + "FDFF");
-		  
-		  for(ClassInfoDto classInfo : classFormDto.getClassInfos()) {
-			  System.out.println(classInfo.getDate() + "JJJ");
-			  
-		  }
 		  try {
 			classService.saveClass(classFormDto, classImgFileList);
 		} catch (Exception e) {
@@ -117,8 +110,11 @@ public class ClassController {
 	  
 	  @GetMapping(value="/oneday/{classId}")
 	  public String classDtl(Model model, @PathVariable("classId") Long classId) {
+		  
 		  ClassFormDto classFormDto = classService.getClassDtl(classId);
-		  model.addAttribute("class", classFormDto);
+		  
+		  
+		 model.addAttribute("class", classFormDto);
 
 		  return "oneday/classDtl";
 	  }
@@ -183,6 +179,7 @@ public class ClassController {
 		  return "redirect:/";
 	  }
 	  
+
 
 	  
 		//클래스 삭제

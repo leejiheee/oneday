@@ -20,5 +20,5 @@ public interface RegistRepository extends JpaRepository<Regist, Long>{
 	@Query("select count(o) from Regist o where o.member.email = :email")
 	Long countRegist(@Param("email")String email);
 
-
+	
 }

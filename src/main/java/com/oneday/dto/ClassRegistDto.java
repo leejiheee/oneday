@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 public class ClassRegistDto {
 	
+	private Long classId;
+	
 	private String classNm;
 	
 	private int count;
@@ -20,10 +22,13 @@ public class ClassRegistDto {
 	private String date;
 	
 	private String time;
+	
+	
 
 	
 	
 	public ClassRegistDto(RegistClass classRegist, String imgUrl) {
+		this.classId = classRegist.getOnedayClass().getId();
 		this.classNm = classRegist.getOnedayClass().getClassNm();
 		this.count = classRegist.getCount();
 		this.registPrice = classRegist.getRegistPrice();

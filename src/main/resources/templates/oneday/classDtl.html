@@ -296,11 +296,19 @@ li{list-style:none;}
 							<br/>
 							
 							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">최종 가격</h5>
-							<strong id="totalPrice" class="text-primary h4"></strong> <input type="hidden" id="registPrice">
+							<strong id="totalPrice" class="text-primary h4"></strong>
 						</div>
 							</div>
 						</div>
 						<button type="button" class="btn btn-primary btn-lg" onclick="regist()">신청하기</button>
+						
+						<div>
+							<h4>리뷰</h4>
+							<div th:each="review : ${reviews}">
+								<p th:text="${review.reviewScore}"></p>
+								<p th:text="${review.reviewContent}"></p>
+							</div>
+						</div>
 						
 					</div>
 				</div>
@@ -345,13 +353,11 @@ li{list-style:none;}
     function date(event) {
         const selectedTime = event.target.value;
         document.getElementById('hiddenDate').value = selectedTime;
-        console.log($("#hiddenDate").val());
     }
 
     function times(event) {
         const selectedDate = event.target.value;
         document.getElementById('hiddenTime').value = selectedDate;
-        console.log($("#hiddenTime").val());
     }
  
     function printTotal()  {
@@ -360,9 +366,7 @@ li{list-style:none;}
 
     function calculateTotalPrice() {
         var count = $("#count").val(); //수량
-        console.log(count);
         var price = [[${class.price}]] //가격
-        console.log(price);
         var totalPrice = (price * count).toLocaleString('ko-KR'); //천단위 콤마
         $("#totalPrice").html(totalPrice + '원'); //총가격 출력
     }
@@ -373,6 +377,10 @@ li{list-style:none;}
 
 			var url = "/regist";
 			
+			var price = [[${class.price}]]
+			var count = $("#count").val();
+			
+			//var totalPrice = (price * count);
 			
 			// Controller(서버)에 전달할 데이터
 			var paramData = {
@@ -380,10 +388,10 @@ li{list-style:none;}
 				count : $("#count").val(), // 수량
 				time : $("#hiddenTime").val(),
 				date : $("#hiddenDate").val(),
-				totalPrice : $("#totalPrice").val()
+				totalPrice : price
 			}
 			
-			alert($("#totalPrice").val());
+			alert(totalPrice);
 
 			// ★★ 전달하기 전에 데이터를 JSON -> 문자열로 만들어야한다.
 

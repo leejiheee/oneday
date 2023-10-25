@@ -49,6 +49,7 @@ public class Regist extends BaseEntity{
 		regist.setRegistStatus(RegistStatus.REGIST);
 		regist.setRegistDate(LocalDateTime.now());
 		
+		
 		return regist;
 	}
 	
@@ -59,5 +60,14 @@ public class Regist extends BaseEntity{
 		}
 		
 		return totalPrice;
+	}
+	
+	
+	public void cancelRegist() {
+		this.registStatus = RegistStatus.CANCLE;
+	}
+	
+	public void reviewRegist() {
+		this.registStatus = RegistStatus.REVIEW;
 	}
 }

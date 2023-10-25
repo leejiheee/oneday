@@ -26,12 +26,14 @@ public class MainClassDto {
 	
 	private String regionDtl;
 	
+	private double averageRating;
+	
 	private Category category;
 	
 	private ClassInfo classInfo;
 	
 	@QueryProjection
-	public MainClassDto(Long id, String classNm, String classDetail, String imgUrl, Integer price, String teacherNm, String region, String regionDtl, Category category) {
+	public MainClassDto(Long id, String classNm, String classDetail, String imgUrl, Integer price, String teacherNm, String region, String regionDtl, double averageRating, Category category) {
 		this.id = id;
 		this.classDetail = classDetail;
 		this.classNm = classNm;
@@ -41,5 +43,6 @@ public class MainClassDto {
 		this.region = region;
 		this.regionDtl = regionDtl;
 		this.category = category;
+		this.averageRating = averageRating;
 	}
 }

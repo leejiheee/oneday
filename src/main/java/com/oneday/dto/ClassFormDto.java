@@ -53,6 +53,7 @@ public class ClassFormDto {
 	
 	private List<ClassInfoDto> classInfos = new ArrayList<>();	
 
+	private List<ReviewDto> reviews = new ArrayList<>();
 
 	//이미지 정보 저장
 	private List<ClassImgDto> classImgDtoList = new ArrayList<>();
