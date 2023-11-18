@@ -292,7 +292,7 @@ li{list-style:none;}
 						</div>
 							<div>
 							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">1인 당 가격</h5>
-							<strong id="price" class="text-primary h4" th:text="${class.price}"></strong>
+							<strong id="price" class="text-primary h4" th:text="${#numbers.formatInteger(class.price, 3, 'COMMA') + '원'}"></strong>
 							<br/>
 							
 							<h5 style="display: inline-block; margin-right: 15px; color: black; font-weight: bold;">최종 가격</h5>
@@ -300,13 +300,18 @@ li{list-style:none;}
 						</div>
 							</div>
 						</div>
-						<button type="button" class="btn btn-primary btn-lg" onclick="regist()">신청하기</button>
+						<button style="margin-top: 30px;" type="button" class="btn btn-primary btn-lg" onclick="regist()">신청하기</button>
 						
-						<div>
-							<h4>리뷰</h4>
+						<div class="d-block agent-box p-5">
+							<h4 style="margin-bottom: 30px;">리뷰</h4>
 							<div th:each="review : ${reviews}">
-								<p th:text="${review.reviewScore}"></p>
+								<span>작성자: </span>
+								<span th:text="${review.createBy}"></span>
+								<br/>
+								<span>평점: </span>
+								<span th:text="${review.reviewScore}"></span>
 								<p th:text="${review.reviewContent}"></p>
+								<hr/>
 							</div>
 						</div>
 						
@@ -319,6 +324,7 @@ li{list-style:none;}
 <th:block layout:fragment="script">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script th:inline="javascript">
+	
 	let selectedDate = null;
 	let selectedTime = null;
 

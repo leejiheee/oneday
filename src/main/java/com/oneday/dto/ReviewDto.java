@@ -18,6 +18,8 @@ public class ReviewDto {
 	
 	private Long registId;
 	
+	private String createBy;
+	
 	private static ModelMapper modelMapper = new ModelMapper();
 
 	

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oneday.dto.ClassFormDto;
 import com.oneday.dto.ReviewDto;
 import com.oneday.entity.Member;
 import com.oneday.entity.OnedayClass;
@@ -31,6 +32,7 @@ public class ReviewService {
 	private final RegistRepository registRepository;
 
 	
+	//리뷰 저장
 	public Long saveReview(String userName, ReviewDto reviewDto, Long classId) {
 		OnedayClass onedayClass = classRepository.findById(classId)
 				.orElseThrow(EntityNotFoundException::new);
@@ -55,6 +57,7 @@ public class ReviewService {
 	    
 	}
 	
+
 	private void updateClassAverageRating(OnedayClass onedayClass) {
 	    // 원데이 클래스의 모든 리뷰를 가져옵니다.
 	    List<Review> reviews = reviewRepository.findByOnedayClass_Id(onedayClass.getId());

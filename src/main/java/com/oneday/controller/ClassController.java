@@ -115,7 +115,9 @@ public class ClassController {
 		  
 		  
 		 model.addAttribute("class", classFormDto);
-
+		 model.addAttribute("reviews", classFormDto.getReviews());
+		
+		 
 		  return "oneday/classDtl";
 	  }
 	  

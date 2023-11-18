@@ -117,9 +117,14 @@ public class ClassService {
 		
 		List<ClassInfo> classInfoList = classInfoRepository.findByOnedayClassIdOrderByIdAsc(classId);
 		
+		List<Review> reviewList = reviewRepository.findByOnedayClassIdOrderByIdAsc(classId);
+
+		
 		//엔티티객체 -> Dto로 변환
 		List<ClassImgDto> classImgDtoList = new ArrayList<>();
-		List<ClassInfoDto> classInfoDtoList = new ArrayList<>();			
+		List<ClassInfoDto> classInfoDtoList = new ArrayList<>();
+		List<ReviewDto> reviewDtoList = new ArrayList<>();
+
 		
 		for(ClassImg classImg : classImgList) {
 			ClassImgDto classImgDto = ClassImgDto.of(classImg);
@@ -131,6 +136,10 @@ public class ClassService {
 			classInfoDtoList.add(classInfoDto);
 		}
 		
+		for(Review review : reviewList) {
+			ReviewDto reviewDto = ReviewDto.of(review);
+			reviewDtoList.add(reviewDto);
+		}
 		
 
 
@@ -145,6 +154,8 @@ public class ClassService {
 		classFormDto.setClassImgDtoList(classImgDtoList);
 		
 		classFormDto.setClassInfos(classInfoDtoList);
+		
+		classFormDto.setReviews(reviewDtoList);
 		
 		
 		return classFormDto;
